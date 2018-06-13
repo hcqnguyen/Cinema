@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="56dp"
         android:orientation="vertical"
         android:background="@color/colorTitle"
         >
@@ -17,6 +17,7 @@
             android:text="@string/title_create_new_film"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:textStyle="bold"
             android:textSize="20dp"
             android:layout_gravity="center"
@@ -24,36 +25,57 @@
             />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/image_view_avatar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        />
-    <Button
-        android:id="@+id/button_choose_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/action_choose_image"
-        android:layout_gravity="center"
-        android:background="@color/colorTitle"
-        android:textColor="@color/colorText"
-        />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:id="@+id/image_view_avatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            />
+        <Button
+            android:id="@+id/button_choose_image"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_choose_image"
+            android:layout_gravity="center"
+            android:background="@color/colorTitle"
+            android:textColor="@color/colorText"
+            />
     <TextView
         android:id="@+id/text_view_film_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:text="@string/msg_film_name"
+
         />
     <EditText
         android:id="@+id/edit_text_film_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:minHeight="30dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@drawable/roundedbutton"/>
     <TextView
         android:id="@+id/text_view_kind"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:text="@string/msg_film_kind"
         />
 
@@ -61,36 +83,50 @@
     <Spinner
         android:id="@+id/spinner_kind"
         android:layout_width="match_parent"
-        android:layout_height="30dp">
+        android:layout_height="wrap_content"
+        android:minHeight="30dp"
+        android:background="@drawable/roundedbutton"
+
+
+        >
     </Spinner>
 
     <TextView
         android:id="@+id/text_view_start_day"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:text="@string/msg_start_day"
         />
 
-    <EditText
-        android:id="@+id/edit_text_start_day"
+    <TextView
+        android:id="@+id/text_view_input_star_day"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="date" />
+        android:minHeight="30dp"
+        android:paddingLeft="10dp"
+        android:background="@drawable/roundedbutton"
+        />
 
     <TextView
         android:id="@+id/text_view_discription"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:text="@string/msg_discription"
         />
-    
+
     <EditText
         android:id="@+id/edit_text_discription"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundedbutton"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:minHeight="50dp"
+        android:layout_marginBottom="10dp"
         />
     <Button
         android:id="@+id/button_create_film"
@@ -101,7 +137,8 @@
         android:background="@color/colorTitle"
         android:textColor="@color/colorText"
         />
-
+    </LinearLayout>
+    </ScrollView>
 
 
 </LinearLayout>
