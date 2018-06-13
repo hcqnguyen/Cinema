@@ -1,13 +1,15 @@
-package com.example.nguyen.cinema;
+package com.example.nguyen.cinema.Activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.nguyen.cinema.R;
+
+public class CreateFilmActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_create_film);
     }
 }
