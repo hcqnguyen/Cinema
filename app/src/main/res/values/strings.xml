@@ -2,13 +2,10 @@
     <string name="app_name">Cinema</string>
 
 
-
-
-
     <!-- Action -->
 
     <string name="action_Sign_in">Đăng nhập</string>
-    <string name="action_Sign_un">Đăng ký</string>
+    <string name="action_Sign_up">Đăng ký</string>
     <string name="action_Log_out">Đăng xuất</string>
     <string name="action_choose_image">Chọn ảnh</string>
     <string name="action_create_film">Tạo phim</string>
@@ -19,8 +16,10 @@
     <string name="msg_film_kind"> Thể loại</string>
     <string name="msg_start_day"> Ngày phát hành</string>
     <string name="msg_discription">Mô tả </string>
+    <string name="msg_or"> hoặc </string>
 
     <!-- Title -->
     <string name="title_create_new_film">TẠO PHIM MỚI</string>
     <string name="titile_list_film">DANH SÁCH PHIM</string>
+    <string name="title_Sign_un">ĐĂNG KÝ</string>
 </resources>

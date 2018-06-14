@@ -80,13 +80,7 @@ public class ResponeApi {
             this.cover = cover;
         }
 
-        public String getCreator() {
-            return creator;
-        }
 
-        public void setCreator(String creator) {
-            this.creator = creator;
-        }
 
         public String getCreatedAt() {
             return createdAt;
@@ -110,13 +104,69 @@ public class ResponeApi {
         private String cover;
         @SerializedName("creator")
         @Expose
-        private String creator;
+        private Creator creator;
         @SerializedName("createdAt")
         @Expose
         private String createdAt;
         @SerializedName("__v")
         @Expose
         private Integer v;
+
+        public Creator getCreator() {
+
+            return creator;
+        }
+
+        public void setCreator(Creator creator) {
+
+            this.creator = creator;
+        }
+        public class Creator{
+            @SerializedName("avatar")
+            @Expose
+            private String avatar;
+            @SerializedName("_id")
+            @Expose
+            private String id;
+            @SerializedName("email")
+            @Expose
+            private String email;
+            @SerializedName("username")
+            @Expose
+            private String username;
+
+            public String getAvatar() {
+                return avatar;
+            }
+
+            public void setAvatar(String avatar) {
+                this.avatar = avatar;
+            }
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getEmail() {
+                return email;
+            }
+
+            public void setEmail(String email) {
+                this.email = email;
+            }
+
+            public String getUsername() {
+                return username;
+            }
+
+            public void setUsername(String username) {
+                this.username = username;
+            }
+        }
     }
 
     public int getStatus() {
