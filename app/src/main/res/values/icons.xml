@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fa_glass">&#xf26e;</string>
+    <string name="fas_fa_user">&#xf007;</string>
+    <string name="fas_calendar">&#xf133;</string>
+    <string name="fas_film">&#xf008;</string>
+</resources>

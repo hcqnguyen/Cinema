@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Cinema</string>
 
+
+
+
+
     <!-- Action -->
 
     <string name="action_Sign_in">Đăng nhập</string>
@@ -18,4 +22,5 @@
 
     <!-- Title -->
     <string name="title_create_new_film">TẠO PHIM MỚI</string>
+    <string name="titile_list_film">DANH SÁCH PHIM</string>
 </resources>

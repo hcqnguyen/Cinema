@@ -7,49 +7,75 @@ import com.google.gson.annotations.SerializedName;
 
 public class Film {
 
-    @SerializedName("title")
-    @Expose
-    private String title;
-    @SerializedName("genre")
-    @Expose
-    private String genre;
-    @SerializedName("release")
-    @Expose
-    private String release;
-    @SerializedName("description")
-    @Expose
-    private String description;
+    String mTitle;
+    String mGenre;
+    String mRelease;
+    String mIdUser;
+    String mDiscription;
 
-    public String getTitle() {
-        return title;
+    public String getmCover() {
+        return mCover;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setmCover(String mCover) {
+        this.mCover = mCover;
     }
 
-    public String getGenre() {
-        return genre;
+    String mCover;
+
+    public String getmRelease() {
+        return mRelease;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
+    public void setmRelease(String mRelease) {
+        this.mRelease = mRelease;
     }
 
-    public String getRelease() {
-        return release;
+
+    public Film() {
     }
 
-    public void setRelease(String release) {
-        this.release = release;
+    public Film(String mTitle, String mGenre, String mRelease, String mIdUser, String mDiscription) {
+        this.mTitle = mTitle;
+        this.mGenre = mGenre;
+
+        this.mIdUser = mIdUser;
+        this.mDiscription = mDiscription;
+       // this.mCover = mCover;
+        this.mRelease = mRelease;
     }
 
-    public String getDescription() {
-        return description;
+    public String getmTitle() {
+        return mTitle;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setmTitle(String mTitle) {
+        this.mTitle = mTitle;
     }
 
+    public String getmGenre() {
+        return mGenre;
+    }
+
+    public void setmGenre(String mGenre) {
+        this.mGenre = mGenre;
+    }
+
+
+
+    public String getmIdUser() {
+        return mIdUser;
+    }
+
+    public void setmIdUser(String mIdUser) {
+        this.mIdUser = mIdUser;
+    }
+
+    public String getmDiscription() {
+        return mDiscription;
+    }
+
+    public void setmDiscription(String mDiscription) {
+        this.mDiscription = mDiscription;
+    }
 }
