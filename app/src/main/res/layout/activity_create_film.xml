@@ -39,14 +39,14 @@
         android:layout_height="wrap_content">
         <ImageView
             android:layout_marginTop="10dp"
-            android:id="@+id/image_view_avatar"
+            android:id="@+id/image_view_cover"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
 
             />
         <Button
-            android:id="@+id/button_choose_image"
+            android:id="@+id/button_choose_cover"
             android:layout_marginTop="10dp"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
 
             />
     <TextView
-        android:id="@+id/text_view_film_name"
+        android:id="@+id/text_view_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
@@ -65,7 +65,7 @@
 
         />
     <EditText
-        android:id="@+id/edit_text_film_name"
+        android:id="@+id/edit_text_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="30dp"
@@ -73,7 +73,7 @@
         android:paddingRight="10dp"
         android:background="@drawable/roundedbutton"/>
     <TextView
-        android:id="@+id/text_view_kind"
+        android:id="@+id/text_view_genre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
@@ -83,7 +83,7 @@
 
 
     <Spinner
-        android:id="@+id/spinner_kind"
+        android:id="@+id/spinner_genre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="30dp"
@@ -94,7 +94,7 @@
     </Spinner>
 
     <TextView
-        android:id="@+id/text_view_start_day"
+        android:id="@+id/text_view_release"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
@@ -104,7 +104,7 @@
         />
 
     <TextView
-        android:id="@+id/text_view_input_star_day"
+        android:id="@+id/text_view_input_release"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="30dp"
@@ -141,7 +141,7 @@
         android:background="@color/colorTitle"
         android:textColor="@color/colorText"
         android:elevation="20dp"
-        android:stateListAnimator="@drawable/button_state_list_anim_material"
+
         />
     </LinearLayout>
     </ScrollView>

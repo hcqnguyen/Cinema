@@ -15,6 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,6 +28,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nguyen.cinema.Data.Model.Film;
+import com.example.nguyen.cinema.Data.Remote.APIService;
 import com.example.nguyen.cinema.R;
 
 import java.io.ByteArrayOutputStream;
@@ -38,21 +41,26 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import static android.media.MediaRecorder.VideoSource.CAMERA;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CreateFilmActivity extends AppCompatActivity {
     private static final String TAG = "CREATE FILM" ;
     Button mButtonChoseImage, mButtonCreateFilm;
-    TextView mTextViewStartDay;
-    EditText mEditTextFilmName, mEditTextDiscription;
+    TextView mTextViewRelease;
+    EditText mEditTextTitle, mEditTextDiscription;
     ImageView mImageViewAvatar;
-    Spinner mSpinnerKind;
+    Spinner mSpinnerGenre;
     Calendar cal;
     Date date;
     int CAMERA = 2, GALLERY  = 1;
     private Bitmap myBitmap;
     private static final String IMAGE_DIRECTORY = "/demonuts";
     private static final int RECORD_REQUEST_CODE = 101;
+    private String mTitle, mGenre, mRelease, mDiscription;
+    private APIService mAPIService;
+    File mImageFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +78,7 @@ public class CreateFilmActivity extends AppCompatActivity {
     private void addEvents() {
 
         // TODO set Data for spiner
-        String arr[] = {
+        final String arr[] = {
                 "Hành động",
                 "Lãng mạn",
                 "Hài hước",
@@ -78,13 +86,13 @@ public class CreateFilmActivity extends AppCompatActivity {
         };
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,arr);
         adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
-        mSpinnerKind.setAdapter(adapter);
+        mSpinnerGenre.setAdapter(adapter);
 
         cal = Calendar.getInstance();
         SimpleDateFormat dft = null;
         dft = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String strDate = dft.format(cal.getTime());
-        mTextViewStartDay.setText(strDate);
+        mTextViewRelease.setText(strDate);
 
 
         mButtonChoseImage.setOnClickListener(new View.OnClickListener() {
@@ -93,23 +101,49 @@ public class CreateFilmActivity extends AppCompatActivity {
                 showChooseDialog();
             }
         });
-        mButtonCreateFilm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
-        mSpinnerKind.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mSpinnerGenre.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mGenre = arr[2].trim();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                mGenre = "";
             }
         });
 
-        mTextViewStartDay.setOnClickListener(showDatePicker);
+        mTextViewRelease.setOnClickListener(showDatePicker);
+
+        //TODO button create film
+        mButtonCreateFilm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTitle = mEditTextTitle.getText().toString().trim();
+                mRelease = mTextViewRelease.getText().toString().trim();
+                mDiscription = mEditTextDiscription.getText().toString().trim();
+                if (!TextUtils.isEmpty(mTitle) && !TextUtils.isEmpty(mDiscription)
+                        && !TextUtils.isEmpty(mGenre) && !TextUtils.isEmpty(mRelease)){
+                    sendFilm(mTitle, mGenre, mRelease, mDiscription);
+                }
+            }
+        });
+    }
+
+    private void sendFilm(String mTitle, String mGenre, String mRelease, String mDiscription) {
+        mAPIService.send(mTitle,mGenre,mRelease,mDiscription).enqueue(new Callback<Film>() {
+            @Override
+            public void onResponse(Call<Film> call, Response<Film> response) {
+                if (response.isSuccessful()){
+                    Toast.makeText(CreateFilmActivity.this,"Phim đã được tạo",Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Film> call, Throwable t) {
+                Toast.makeText(CreateFilmActivity.this,"Phim chưa được tạo",Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     // TODO button choose image
@@ -228,6 +262,10 @@ public class CreateFilmActivity extends AppCompatActivity {
         }
     }
 
+    public void createFilm(){
+
+    }
+
     private String saveImage(Bitmap mybitmap) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         mybitmap.compress(Bitmap.CompressFormat.PNG, 90, bytes);
@@ -248,6 +286,7 @@ public class CreateFilmActivity extends AppCompatActivity {
                     new String[]{f.getPath()},
                     new String[]{"image/jpeg"}, null);
             fo.close();
+            mImageFile = f;
             Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
 
             return f.getAbsolutePath();
@@ -264,12 +303,12 @@ public class CreateFilmActivity extends AppCompatActivity {
             DatePickerDialog.OnDateSetListener startDay = new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    mTextViewStartDay.setText(dayOfMonth+"/"+(month-1) +"/" + year);
+                    mTextViewRelease.setText(dayOfMonth+"/"+(month-1) +"/" + year);
                     cal.set(year,month,dayOfMonth);
                     date = cal.getTime();
                 }
             };
-            String s =  mTextViewStartDay.getText()+  "";
+            String s =  mTextViewRelease.getText()+  "";
             //Lấy ra chuỗi của textView Date
             String strArrtmp[]=s.split("/");
             int ngay=Integer.parseInt(strArrtmp[0]);
@@ -284,13 +323,13 @@ public class CreateFilmActivity extends AppCompatActivity {
     };
 
     private void addControls() {
-        mImageViewAvatar = findViewById(R.id.image_view_avatar);
-        mButtonChoseImage = findViewById(R.id.button_choose_image);
+        mImageViewAvatar = findViewById(R.id.image_view_cover);
+        mButtonChoseImage = findViewById(R.id.button_choose_cover);
         mButtonCreateFilm = findViewById(R.id.button_create_film);
-        mTextViewStartDay = findViewById(R.id.text_view_input_star_day);
-        mEditTextFilmName = findViewById(R.id.edit_text_film_name);
+        mTextViewRelease = findViewById(R.id.text_view_input_release);
+        mEditTextTitle = findViewById(R.id.edit_text_title);
         mEditTextDiscription = findViewById(R.id.edit_text_discription);
-        mSpinnerKind = findViewById(R.id.spinner_kind);
+        mSpinnerGenre = findViewById(R.id.spinner_genre);
         mImageViewAvatar.setImageResource(R.drawable.ic_avatar);
     }
 
