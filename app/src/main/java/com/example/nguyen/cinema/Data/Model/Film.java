@@ -7,11 +7,16 @@ import com.google.gson.annotations.SerializedName;
 
 public class Film {
 
+    @SerializedName("title")
+    @Expose
     String mTitle;
+    @SerializedName("genre")
+    @Expose
     String mGenre;
     String mRelease;
     String mIdUser;
     String mDiscription;
+    String mCover;
 
     public String getmCover() {
         return mCover;
@@ -21,7 +26,7 @@ public class Film {
         this.mCover = mCover;
     }
 
-    String mCover;
+
 
     public String getmRelease() {
         return mRelease;
