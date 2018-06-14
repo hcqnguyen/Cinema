@@ -10,6 +10,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -28,8 +29,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.nguyen.cinema.Data.Model.Film;
+
 import com.example.nguyen.cinema.Data.Remote.APIService;
+import com.example.nguyen.cinema.Data.Remote.ApiUtils;
 import com.example.nguyen.cinema.R;
 
 import java.io.ByteArrayOutputStream;
@@ -39,11 +41,17 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Multipart;
 
 public class CreateFilmActivity extends AppCompatActivity {
     private static final String TAG = "CREATE FILM" ;
@@ -54,7 +62,7 @@ public class CreateFilmActivity extends AppCompatActivity {
     Spinner mSpinnerGenre;
     Calendar cal;
     Date date;
-    int CAMERA = 2, GALLERY  = 1;
+    int REQUEST_IMAGE_CAPTURE = 1, GALLERY  = 0;
     private Bitmap myBitmap;
     private static final String IMAGE_DIRECTORY = "/demonuts";
     private static final int RECORD_REQUEST_CODE = 101;
@@ -105,7 +113,7 @@ public class CreateFilmActivity extends AppCompatActivity {
         mSpinnerGenre.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mGenre = arr[2].trim();
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -119,32 +127,31 @@ public class CreateFilmActivity extends AppCompatActivity {
         mButtonCreateFilm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mEditTextTitle.getText().toString() =="" || mImageFile.isFile() == false){
+                    Toast.makeText(CreateFilmActivity.this,"Vui lòng nhập đầy đủ thông tin!",Toast.LENGTH_LONG).show();
+                }
+                else{
                 mTitle = mEditTextTitle.getText().toString().trim();
                 mRelease = mTextViewRelease.getText().toString().trim();
                 mDiscription = mEditTextDiscription.getText().toString().trim();
-                if (!TextUtils.isEmpty(mTitle) && !TextUtils.isEmpty(mDiscription)
-                        && !TextUtils.isEmpty(mGenre) && !TextUtils.isEmpty(mRelease)){
-                    sendFilm(mTitle, mGenre, mRelease, mDiscription);
+                mGenre = mSpinnerGenre.getSelectedItem().toString().trim();
+                requestPermission();
+
                 }
             }
         });
     }
 
-    private void sendFilm(String mTitle, String mGenre, String mRelease, String mDiscription) {
-        mAPIService.send(mTitle,mGenre,mRelease,mDiscription).enqueue(new Callback<Film>() {
-            @Override
-            public void onResponse(Call<Film> call, Response<Film> response) {
-                if (response.isSuccessful()){
-                    Toast.makeText(CreateFilmActivity.this,"Phim đã được tạo",Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Film> call, Throwable t) {
-                Toast.makeText(CreateFilmActivity.this,"Phim chưa được tạo",Toast.LENGTH_LONG).show();
-            }
-        });
+    public void requestPermission() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                    1);
+            return;
+        }
+        createFilm();
     }
+
 
     // TODO button choose image
     private void showChooseDialog() {
@@ -171,43 +178,26 @@ public class CreateFilmActivity extends AppCompatActivity {
     }
 
     public void choosePhotoFromGallary() {
-
-        int permission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.RECORD_AUDIO);
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            Log.i(TAG, "Permission to record denied");
-            makeRequestGalerry();
-        }
-
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-        startActivityForResult(galleryIntent,GALLERY);
+        startActivityForResult(galleryIntent, GALLERY);
     }
-
-    private void makeRequestGalerry() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                RECORD_REQUEST_CODE);
-    }
-
 
     private void takePhotoFromCamera() {
-        int permission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.RECORD_AUDIO);
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            Log.i(TAG, "Permission to record denied");
-            makeRequestCamera();
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, CAMERA);
     }
-    private void makeRequestCamera() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.CAMERA},
-                RECORD_REQUEST_CODE);
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                createFilm();
+            }
+        }
     }
 
     @Override
@@ -232,38 +222,45 @@ public class CreateFilmActivity extends AppCompatActivity {
                 }
             }
 
-        } else if (requestCode == CAMERA) {
+        } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
             mImageViewAvatar.setImageBitmap(thumbnail);
             saveImage(thumbnail);
             Toast.makeText(CreateFilmActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
         }
-        if (requestCode == GALLERY) {
-            if (data != null) {
-                Uri contentURI = data.getData();
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                    String path = saveImage(bitmap);
-                    Toast.makeText(CreateFilmActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
-                    mImageViewAvatar.setImageBitmap(bitmap);
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(CreateFilmActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        }
-        else if (requestCode == CAMERA) {
-            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-            mImageViewAvatar.setImageBitmap(thumbnail);
-            saveImage(thumbnail);
-            Toast.makeText(CreateFilmActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
-        }
     }
 
+    //TODO create film
     public void createFilm(){
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"),mImageFile);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("cover",mImageFile.getName(),reqFile);
 
+        RequestBody title = RequestBody.create(MediaType.parse("text/plain"), mTitle);
+        RequestBody genre = RequestBody.create(MediaType.parse("text/plain"), mGenre);
+        RequestBody release = RequestBody.create(MediaType.parse("text/plain"), mRelease);
+        RequestBody description = RequestBody.create(MediaType.parse("text/plain"), mDiscription);
+
+        HashMap<String, RequestBody> map = new HashMap<>();
+        map.put("title", title);
+        map.put("genre", genre);
+        map.put("release", release);
+        map.put("description", description);
+
+        mAPIService = ApiUtils.getAPIService();
+        mAPIService.uploadFileWithPartMap( map, body).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Toast.makeText(CreateFilmActivity.this,"Bạn đã tạo phim thành công",Toast.LENGTH_LONG).show();
+                Log.e("onResponse", response.message() + "__" + response.toString());
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(CreateFilmActivity.this,"Tạo phim không thành công",Toast.LENGTH_LONG).show();
+                t.printStackTrace();
+            }
+        });
     }
 
     private String saveImage(Bitmap mybitmap) {

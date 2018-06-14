@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:text="@string/action_choose_image"
             android:layout_gravity="center"
-            android:background="@drawable/roundedtitle"
+            android:background="@drawable/roundedbutton"
             android:textColor="@color/colorText"
 
             />
@@ -71,7 +71,7 @@
         android:minHeight="30dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:background="@drawable/roundedbutton"/>
+        android:background="@drawable/roundedtext"/>
     <TextView
         android:id="@+id/text_view_genre"
         android:layout_width="wrap_content"
@@ -87,7 +87,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="30dp"
-        android:background="@drawable/roundedbutton"
+        android:background="@drawable/roundedtext"
 
 
         >
@@ -110,7 +110,7 @@
         android:minHeight="30dp"
         android:paddingLeft="10dp"
         android:gravity="center"
-        android:background="@drawable/roundedbutton"
+        android:background="@drawable/roundedtext"
         />
 
     <TextView
@@ -126,7 +126,7 @@
         android:id="@+id/edit_text_discription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/roundedbutton"
+        android:background="@drawable/roundedtext"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:minHeight="50dp"
@@ -138,9 +138,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/action_create_film"
-        android:background="@color/colorTitle"
+        android:background="@drawable/roundedbutton"
         android:textColor="@color/colorText"
         android:elevation="20dp"
+
 
         />
     </LinearLayout>
