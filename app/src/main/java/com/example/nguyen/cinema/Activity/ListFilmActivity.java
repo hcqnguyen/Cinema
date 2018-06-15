@@ -1,15 +1,18 @@
 package com.example.nguyen.cinema.Activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListAdapter;
 
 import com.example.nguyen.cinema.Data.Adapter.ListFilmAdapter;
 import com.example.nguyen.cinema.Data.Model.Film;
+import com.example.nguyen.cinema.Data.Model.IconTextView;
 import com.example.nguyen.cinema.Data.Model.ResponeApi;
 import com.example.nguyen.cinema.Data.Remote.APIService;
 import com.example.nguyen.cinema.Data.Remote.ApiUtils;
@@ -29,6 +32,7 @@ public class ListFilmActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
     private ListFilmAdapter mAdapter;
     private APIService mAPIService;
+    IconTextView mIconTextViewProfile, mIconTextViewCreateFilm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,8 @@ public class ListFilmActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_film);
 
         mRecyclerView = findViewById(R.id.recyclerview_list_film);
+        mIconTextViewCreateFilm = findViewById(R.id.icon_text_view_create_film);
+        mIconTextViewProfile = findViewById(R.id.icon_text_view_profile);
         mAPIService = ApiUtils.getAPIService();
 
         mAdapter = new ListFilmAdapter(new ArrayList<ResponeApi.Movie>(),ListFilmActivity.this);
@@ -47,6 +53,22 @@ public class ListFilmActivity extends AppCompatActivity {
 
         mRecyclerView.setAdapter(mAdapter);
 
+
+        mIconTextViewProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent  = new Intent(ListFilmActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mIconTextViewCreateFilm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent  = new Intent(ListFilmActivity.this,CreateFilmActivity.class);
+                startActivity(intent);
+            }
+        });
         loadFilm();
 
 

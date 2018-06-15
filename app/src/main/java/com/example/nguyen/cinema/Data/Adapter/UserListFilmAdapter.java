@@ -18,11 +18,10 @@ public class UserListFilmAdapter extends RecyclerView.Adapter<UserListFilmAdapte
 
     private String TAG = "USER LIST FILM ";
 
-
-
     private List<ResponeApi.Movie> mFilms;
     private Context context;
     final String DOMAIN = "https://nam-cinema.herokuapp.com";
+
 
     public UserListFilmAdapter(List<ResponeApi.Movie> mFils, Context context) {
         this.mFilms = mFils;
@@ -51,6 +50,8 @@ public class UserListFilmAdapter extends RecyclerView.Adapter<UserListFilmAdapte
         final ResponeApi.Movie movie = mFilms.get(position);
         TextView title = holder.mTextViewFilmTitle;
         ImageView cover = holder.mImageViewFilmCover;
+
+
         Glide.with(context)
                 .load(DOMAIN +movie.getCover())
                 .override(200, 200)
@@ -59,10 +60,15 @@ public class UserListFilmAdapter extends RecyclerView.Adapter<UserListFilmAdapte
 
         title.setText(movie.getTitle());
     }
+    public void upDateListFilm(List<ResponeApi.Movie> items) {
+        mFilms = items;
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mFilms.size();
     }
 
 

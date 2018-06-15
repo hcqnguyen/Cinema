@@ -60,7 +60,7 @@ public class SignUpActivity extends AppCompatActivity {
                         || mEditTextUsername.getText().toString() == null || mEditTextReinputPassword.getText().toString() ==  null ){
                     Toast.makeText(SignUpActivity.this,"Vui lòng nhập đầy đủ thông tin!",Toast.LENGTH_LONG).show();
                 }
-                else if (mPassword.equals(mReinputPassword) == false){
+                else if (mPassword.equalsIgnoreCase(mReinputPassword) == false){
                     Toast.makeText(SignUpActivity.this,"Nhập lại mật khẩu không đúng!",Toast.LENGTH_LONG).show();
                 }
                 else {

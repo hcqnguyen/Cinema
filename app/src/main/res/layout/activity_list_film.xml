@@ -6,23 +6,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.ListFilmActivity">
-    <LinearLayout
+    <RelativeLayout
+
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:background="@color/colorTitle"
         >
+        <com.example.nguyen.cinema.Data.Model.IconTextView
+            android:id="@+id/icon_text_view_profile"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fas_fa_user"
+            android:layout_centerVertical="true"
+            android:textSize="23dp"
+            android:textColor="@color/colorText"
+            />
+
         <TextView
             android:text="@string/titile_list_film"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
             android:textStyle="bold"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
             android:textSize="20dp"
-            android:layout_gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
             android:textColor="@color/colorText"
             />
-    </LinearLayout>
+        <com.example.nguyen.cinema.Data.Model.IconTextView
+            android:id="@+id/icon_text_view_create_film"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fas_plus"
+            android:layout_gravity="center"
+            android:textSize="22dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/colorText"
+            />
+    </RelativeLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview_list_film"
         android:layout_width="match_parent"

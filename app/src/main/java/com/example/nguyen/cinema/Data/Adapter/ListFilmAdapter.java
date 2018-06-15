@@ -37,7 +37,7 @@ public class ListFilmAdapter  extends RecyclerView.Adapter<ListFilmAdapter.ViewH
             mTextViewFilmGenre = itemView.findViewById(R.id.text_view_film_genre);
             mTextViewFilmTitle = itemView.findViewById(R.id.text_view_film_title);
             mTextViewFilmRelease = itemView.findViewById(R.id.text_view_film_release);
-            mTextViewUserId = itemView.findViewById(R.id.text_view_user_ID);
+            mTextViewUserId = itemView.findViewById(R.id.text_movie_ID);
             mImageViewFilmCover  = itemView.findViewById(R.id.image_view_film_cover);
         }
     }

@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.nguyen.cinema.Data.Model.IconTextView;
 import com.example.nguyen.cinema.Data.Remote.APIService;
 import com.example.nguyen.cinema.Data.Remote.ApiUtils;
 import com.example.nguyen.cinema.R;
@@ -58,6 +59,7 @@ public class CreateFilmActivity extends AppCompatActivity {
     Button mButtonChoseImage, mButtonCreateFilm;
     TextView mTextViewRelease;
     EditText mEditTextTitle, mEditTextDiscription;
+    IconTextView mIconTextViewBackToCreateFilm;
     ImageView mImageViewAvatar;
     Spinner mSpinnerGenre;
     Calendar cal;
@@ -102,6 +104,13 @@ public class CreateFilmActivity extends AppCompatActivity {
         String strDate = dft.format(cal.getTime());
         mTextViewRelease.setText(strDate);
 
+        mIconTextViewBackToCreateFilm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CreateFilmActivity.this,ListFilmActivity.class);
+                startActivity(intent);
+            }
+        });
 
         mButtonChoseImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -319,6 +328,7 @@ public class CreateFilmActivity extends AppCompatActivity {
     };
 
     private void addControls() {
+        mIconTextViewBackToCreateFilm =findViewById(R.id.icon_text_view_back_to_list_film);
         mImageViewAvatar = findViewById(R.id.image_view_cover);
         mButtonChoseImage = findViewById(R.id.button_choose_cover);
         mButtonCreateFilm = findViewById(R.id.button_create_film);
