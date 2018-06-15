@@ -6,4 +6,6 @@
     <string name="fas_film">&#xf008;</string>
     <string name="fas_email">&#xf0e0;</string>
     <string name="fas_lock">&#xf023;</string>
+    <string name="fas_phone">&#xf095;</string>
+    <string name="fas_edit">&#xf044;</string>
 </resources>

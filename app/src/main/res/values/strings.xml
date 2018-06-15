@@ -9,6 +9,8 @@
     <string name="action_Log_out">Đăng xuất</string>
     <string name="action_choose_image">Chọn ảnh</string>
     <string name="action_create_film">Tạo phim</string>
+    <string name="action_change_password">Sửa đổi mật khẩu</string>
+    <string name="action_sign_out">Đăng xuất</string>
 
     <!-- Message -->
 
@@ -17,6 +19,7 @@
     <string name="msg_start_day"> Ngày phát hành</string>
     <string name="msg_discription">Mô tả </string>
     <string name="msg_or"> hoặc </string>
+    <string name="msg_my_film">Phim của tôi</string>
 
     <!-- Title -->
     <string name="title_create_new_film">TẠO PHIM MỚI</string>

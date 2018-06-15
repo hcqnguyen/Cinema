@@ -77,10 +77,14 @@ public class SignUpActivity extends AppCompatActivity {
                 if (response.isSuccessful()){
                     Toast.makeText(SignUpActivity.this,"Bạn đã đăng ký thành công!",Toast.LENGTH_LONG).show();
                 }
+                else {
+                    Toast.makeText(SignUpActivity.this,response.message(),Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
                 Toast.makeText(SignUpActivity.this,"Đăng ký không thành công!",Toast.LENGTH_LONG).show();
 
             }

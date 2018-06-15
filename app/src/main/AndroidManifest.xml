@@ -20,10 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.LoginActivity" />
         <activity android:name=".Activity.CreateFilmActivity" />
         <activity android:name=".Activity.ListFilmActivity" />
-        <activity android:name=".Activity.SignInActivity"></activity>
+        <activity android:name=".Activity.SignInActivity" />
+        <activity android:name=".Activity.ProfileActivity"></activity>
     </application>
 
 </manifest>

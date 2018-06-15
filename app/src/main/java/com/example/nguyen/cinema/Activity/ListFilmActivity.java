@@ -37,9 +37,6 @@ public class ListFilmActivity extends AppCompatActivity {
 
         mRecyclerView = findViewById(R.id.recyclerview_list_film);
         mAPIService = ApiUtils.getAPIService();
-//        List<Film> film = new ArrayList<>();
-//        film.add(new Film("one piece","Hanh dong","20/02/2018","123458","qua hay"));
-//        film.add(new Film("Naruto","Hanh dong","20/02/2018","123458","qua hay"));
 
         mAdapter = new ListFilmAdapter(new ArrayList<ResponeApi.Movie>(),ListFilmActivity.this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ListFilmActivity.this);

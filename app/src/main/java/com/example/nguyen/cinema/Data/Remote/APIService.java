@@ -33,9 +33,11 @@ public interface APIService {
             @PartMap() Map<String, RequestBody> partMap,
             @Part MultipartBody.Part file);
 
+    @GET("/api/v1/users/:id/movies/")
+    Call<ResponeApi> getUserListFilm();
+
     @GET("/api/v1/movies/")
     Call<ResponeApi> getFilm();
-
 
     @FormUrlEncoded
     @POST("/api/v1/auth/sign-up/")
