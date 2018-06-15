@@ -75,13 +75,13 @@ public class SignInActivity extends AppCompatActivity {
                     Toast.makeText(SignInActivity.this,response.message(),Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Intent intent = new Intent(SignInActivity.this, ProfileActivity.class);
-                    SharedPreferences pre = getSharedPreferences("my_account",MODE_PRIVATE);
-                    SharedPreferences.Editor editor = pre.edit();
-                    editor.putString("email",mEmail);
-                    editor.putString("password",mPassword);
-                    editor.commit();
+//                    SharedPreferences pre = getSharedPreferences("my_account",MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = pre.edit();
+//                    editor.putString("email",mEmail);
+//                    editor.putString("password",mPassword);
+//                    editor.commit();
 
+                    Intent intent = new Intent(SignInActivity.this, ListFilmActivity.class);
                     startActivity(intent);
                     Log.e(TAG,"DANG NHAP THANH CONG");
                 }

@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,8 +59,8 @@ public class CreateFilmActivity extends AppCompatActivity {
     private static final String TAG = "CREATE FILM" ;
     Button mButtonChoseImage, mButtonCreateFilm;
     TextView mTextViewRelease;
+    LinearLayout mLinearLayoutBackToListFilm;
     EditText mEditTextTitle, mEditTextDiscription;
-    IconTextView mIconTextViewBackToCreateFilm;
     ImageView mImageViewAvatar;
     Spinner mSpinnerGenre;
     Calendar cal;
@@ -104,7 +105,7 @@ public class CreateFilmActivity extends AppCompatActivity {
         String strDate = dft.format(cal.getTime());
         mTextViewRelease.setText(strDate);
 
-        mIconTextViewBackToCreateFilm.setOnClickListener(new View.OnClickListener() {
+        mLinearLayoutBackToListFilm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CreateFilmActivity.this,ListFilmActivity.class);
@@ -328,7 +329,7 @@ public class CreateFilmActivity extends AppCompatActivity {
     };
 
     private void addControls() {
-        mIconTextViewBackToCreateFilm =findViewById(R.id.icon_text_view_back_to_list_film);
+        mLinearLayoutBackToListFilm =findViewById(R.id.linear_layout_back_to_list_film);
         mImageViewAvatar = findViewById(R.id.image_view_cover);
         mButtonChoseImage = findViewById(R.id.button_choose_cover);
         mButtonCreateFilm = findViewById(R.id.button_create_film);

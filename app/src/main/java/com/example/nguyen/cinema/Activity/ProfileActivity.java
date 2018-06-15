@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.nguyen.cinema.Data.Adapter.ListFilmAdapter;
@@ -33,7 +34,8 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 public class ProfileActivity extends AppCompatActivity {
-    IconTextView mIconTextViewEditUsername, getmIconTextViewEditPhoneNumber, mIconTextViewProfileBackToListFilm;
+
+    LinearLayout mLinearLayoutProfileBackToListFilm, mLinearLayoutEditPhoneNumber, mLInearLayoutEditUsername;
     Button mButtonChangePassword, mButtonSignOut, mButtonOk, mButtonCancel;
     EditText mEditTextOldPassword,mEditTextNewPassword,mEditTextReinputNewPassword ;
     RecyclerView mRecyclerViewListFilm;
@@ -48,12 +50,12 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         mEditTextOldPassword = findViewById(R.id.edit_text_old_password);
-        mIconTextViewEditUsername = findViewById(R.id.icon_text_view_edit_username);
-        getmIconTextViewEditPhoneNumber = findViewById(R.id.icon_text_view_edit_phone_number);
+        mLInearLayoutEditUsername = findViewById(R.id.linear_layout_edit_username);
+        mLinearLayoutEditPhoneNumber = findViewById(R.id.linear_layout_edit_phone_number);
         mButtonChangePassword = findViewById(R.id.button_change_password);
         mButtonSignOut = findViewById(R.id.button_sign_out);
         mRecyclerViewListFilm = findViewById(R.id.recyclerview_profile_list_film);
-        mIconTextViewProfileBackToListFilm = findViewById(R.id.icon_text_view_profile_back_to_list_film);
+        mLinearLayoutProfileBackToListFilm = findViewById(R.id.linear_layout_profile_back_to_list_film);
         mAPIService = ApiUtils.getAPIService();
         mAdapter = new UserListFilmAdapter(new ArrayList<ResponeApi.Movie>(), ProfileActivity.this);
 
@@ -77,7 +79,7 @@ public class ProfileActivity extends AppCompatActivity {
                 showChooseDialog();
             }
         });
-        mIconTextViewProfileBackToListFilm.setOnClickListener(new View.OnClickListener() {
+        mLinearLayoutProfileBackToListFilm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ProfileActivity.this,ListFilmActivity.class);

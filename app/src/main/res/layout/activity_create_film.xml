@@ -13,17 +13,23 @@
         android:orientation="horizontal"
         android:background="@color/colorTitle"
         >
-        <com.example.nguyen.cinema.Data.Model.IconTextView
-            android:id="@+id/icon_text_view_back_to_list_film"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="@string/fas_chevron_back"
+        <LinearLayout
+            android:id="@+id/linear_layout_back_to_list_film"
+            android:layout_width="60dp"
             android:layout_centerVertical="true"
-            android:textColor="@color/colorText"
-            android:layout_marginLeft="10dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            >
+            <com.example.nguyen.cinema.Data.Model.IconTextView
 
-            />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="@string/fas_chevron_back"
+                android:textColor="@color/colorText"
+                />
+        </LinearLayout>
+
         <TextView
             android:text="@string/title_create_new_film"
             android:layout_width="wrap_content"

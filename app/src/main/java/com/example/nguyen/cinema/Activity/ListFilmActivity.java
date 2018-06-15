@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 
 import com.example.nguyen.cinema.Data.Adapter.ListFilmAdapter;
@@ -32,7 +33,7 @@ public class ListFilmActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
     private ListFilmAdapter mAdapter;
     private APIService mAPIService;
-    IconTextView mIconTextViewProfile, mIconTextViewCreateFilm;
+    LinearLayout mLinearLayoutOpenProfile, mLinearLayoutOpenCreateFilm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +41,8 @@ public class ListFilmActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_film);
 
         mRecyclerView = findViewById(R.id.recyclerview_list_film);
-        mIconTextViewCreateFilm = findViewById(R.id.icon_text_view_create_film);
-        mIconTextViewProfile = findViewById(R.id.icon_text_view_profile);
+        mLinearLayoutOpenCreateFilm = findViewById(R.id.linear_layout_open_create_film);
+        mLinearLayoutOpenProfile = findViewById(R.id.linear_layout_go_open_profile);
         mAPIService = ApiUtils.getAPIService();
 
         mAdapter = new ListFilmAdapter(new ArrayList<ResponeApi.Movie>(),ListFilmActivity.this);
@@ -53,8 +54,7 @@ public class ListFilmActivity extends AppCompatActivity {
 
         mRecyclerView.setAdapter(mAdapter);
 
-
-        mIconTextViewProfile.setOnClickListener(new View.OnClickListener() {
+        mLinearLayoutOpenProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent  = new Intent(ListFilmActivity.this, ProfileActivity.class);
@@ -62,7 +62,7 @@ public class ListFilmActivity extends AppCompatActivity {
             }
         });
 
-        mIconTextViewCreateFilm.setOnClickListener(new View.OnClickListener() {
+        mLinearLayoutOpenCreateFilm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent  = new Intent(ListFilmActivity.this,CreateFilmActivity.class);
