@@ -1,6 +1,7 @@
 package com.example.nguyen.cinema.Data.Remote;
 
 import com.example.nguyen.cinema.Data.Model.Film;
+import com.example.nguyen.cinema.Data.Model.Login;
 import com.example.nguyen.cinema.Data.Model.ResponeApi;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public interface APIService {
             );
     @FormUrlEncoded
     @POST("/api/v1/auth/sign-in/")
-    Call<ResponseBody> signIn(
+    Call<Login> signIn(
             @Field("email") String email,
             @Field("password") String password
     );

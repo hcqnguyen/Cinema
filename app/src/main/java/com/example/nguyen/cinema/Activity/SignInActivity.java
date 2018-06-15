@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.nguyen.cinema.Data.Model.Login;
 import com.example.nguyen.cinema.Data.Remote.APIService;
 import com.example.nguyen.cinema.Data.Remote.ApiUtils;
 import com.example.nguyen.cinema.R;
@@ -27,10 +28,18 @@ public class SignInActivity extends AppCompatActivity {
     APIService mAPIService;
     final String TAG = "--- SIGN IN ACITIVTY";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+
+        SharedPreferences pre = getSharedPreferences("access_token",MODE_PRIVATE);
+        if (pre.getBoolean("isLogin",false) == true)
+        {
+            Intent intent = new Intent(SignInActivity.this, ListFilmActivity.class);
+            startActivity(intent);
+        }
 
         mButtonSigIn2 =findViewById(R.id.button_Sign_in_2);
         mButtonSigUp2 = findViewById(R.id.button_Sign_up_2);
@@ -40,12 +49,12 @@ public class SignInActivity extends AppCompatActivity {
         mAPIService = ApiUtils.getAPIService();
 
 
-
         mButtonSigUp2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intetn = new Intent(SignInActivity.this,SignUpActivity.class);
                 startActivity(intetn);
+
             }
         });
         mButtonSigIn2.setOnClickListener(new View.OnClickListener() {
@@ -67,19 +76,23 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void signIn() {
-        mAPIService.signIn(mEmail,mPassword).enqueue(new Callback<ResponseBody>() {
+        mAPIService.signIn(mEmail,mPassword).enqueue(new Callback<Login>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<Login> call, Response<Login> response) {
                 if (response.isSuccessful() == false)
                 {
                     Toast.makeText(SignInActivity.this,response.message(),Toast.LENGTH_LONG).show();
                 }
                 else {
-//                    SharedPreferences pre = getSharedPreferences("my_account",MODE_PRIVATE);
-//                    SharedPreferences.Editor editor = pre.edit();
-//                    editor.putString("email",mEmail);
-//                    editor.putString("password",mPassword);
-//                    editor.commit();
+                    Boolean isLogin = true;
+                    String token = response.body().getToken();
+                    SharedPreferences pre = getSharedPreferences("access_token",MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pre.edit();
+                    editor.putString("token",token);
+                    editor.putBoolean("isLogin",isLogin);
+                    editor.commit();
+
+
 
                     Intent intent = new Intent(SignInActivity.this, ListFilmActivity.class);
                     startActivity(intent);
@@ -89,7 +102,7 @@ public class SignInActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<Login> call, Throwable t) {
                 Log.e(TAG,"DANG NHAP THAT BAI");
             }
         });

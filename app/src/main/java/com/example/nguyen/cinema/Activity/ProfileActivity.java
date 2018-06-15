@@ -3,6 +3,7 @@ package com.example.nguyen.cinema.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,7 +20,7 @@ import android.widget.Toast;
 import com.example.nguyen.cinema.Data.Adapter.ListFilmAdapter;
 import com.example.nguyen.cinema.Data.Adapter.UserListFilmAdapter;
 import com.example.nguyen.cinema.Data.Model.IconTextView;
-import com.example.nguyen.cinema.Data.Model.ProfileUser;
+import com.example.nguyen.cinema.Data.Model.Login;
 import com.example.nguyen.cinema.Data.Model.ResponeApi;
 import com.example.nguyen.cinema.Data.Remote.APIService;
 import com.example.nguyen.cinema.Data.Remote.ApiUtils;
@@ -86,6 +87,39 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        mButtonSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSignoutDialog();
+            }
+        });
+    }
+
+    private void showSignoutDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Bạn có muốn đăng xuất không?");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setNegativeButton("Đăng xuất", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                showSignoutDialog();
+                SharedPreferences pre = getSharedPreferences("access_token",MODE_PRIVATE);
+                SharedPreferences.Editor editor = pre.edit();
+                editor.clear();
+                editor.commit();
+                Intent intent = new Intent(ProfileActivity.this, SignInActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     // TODO change password

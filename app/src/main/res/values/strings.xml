@@ -23,6 +23,7 @@
     <string name="msg_or"> hoặc </string>
     <string name="msg_my_film">Phim của tôi</string>
     <string name="msg_change_password">Thay đổi mật khẩu</string>
+    <string name="msg_sign_out">Bạn có muốn đăng xuất ?</string>
 
     <!-- Title -->
     <string name="title_create_new_film">TẠO PHIM MỚI</string>
