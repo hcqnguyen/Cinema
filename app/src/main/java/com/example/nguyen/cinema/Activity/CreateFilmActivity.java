@@ -136,7 +136,6 @@ public class CreateFilmActivity extends AppCompatActivity {
                 mDiscription = mEditTextDiscription.getText().toString().trim();
                 mGenre = mSpinnerGenre.getSelectedItem().toString().trim();
                 requestPermission();
-
                 }
             }
         });

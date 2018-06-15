@@ -21,5 +21,12 @@
     <!-- Title -->
     <string name="title_create_new_film">TẠO PHIM MỚI</string>
     <string name="titile_list_film">DANH SÁCH PHIM</string>
-    <string name="title_Sign_un">ĐĂNG KÝ</string>
+    <string name="title_Sign_up">ĐĂNG KÝ</string>
+    <string name="title_Sign_in">ĐĂNG NHẬP</string>
+
+    <!-- Hint -->
+    <string name="hint_username"> Username</string>
+    <string name="hint_email"> Email</string>
+    <string name="hint_password"> Password</string>
+    <string name="hint_reinput_password"> Reinput Password</string>
 </resources>

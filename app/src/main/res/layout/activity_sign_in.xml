@@ -3,49 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bg_sign_up_2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_sign_up_2"
-    tools:context=".Activity.SignUpActivity">
-
-        <TextView
-            android:text="@string/title_Sign_up"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:textColor="@color/colorText"
-            android:layout_gravity="center"
-            />
+    tools:context=".Activity.SignInActivity">
+    <TextView
+        android:text="@string/title_Sign_in"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:textColor="@color/colorText"
+        android:layout_gravity="center"
+        />
     <LinearLayout
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_marginBottom="20dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <com.example.nguyen.cinema.Data.Model.IconTextView
-                android:text="@string/fas_fa_user"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorText"
-                />
-            <EditText
-                android:paddingLeft="10dp"
-                android:layout_marginLeft="29dp"
-                android:id="@+id/edit_text_username"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:textColor="@color/colorText2"
-                android:background="@drawable/roundedtext2"
-                android:hint="@string/hint_username"
-                />
-        </LinearLayout>
+
         <LinearLayout
             android:layout_marginBottom="20dp"
             android:layout_width="match_parent"
@@ -57,7 +35,7 @@
                 android:layout_height="wrap_content" />
             <EditText
                 android:paddingLeft="10dp"
-                android:id="@+id/edit_text_email"
+                android:id="@+id/edit_text_email_2"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginLeft="26dp"
@@ -80,43 +58,25 @@
             <EditText
                 android:inputType="textPassword"
                 android:paddingLeft="10dp"
-                android:id="@+id/edit_text_password"
+                android:id="@+id/edit_text_password_2"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:textColor="@color/colorText2"
                 android:hint="@string/hint_password"
                 android:background="@drawable/roundedtext2"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <com.example.nguyen.cinema.Data.Model.IconTextView
-                android:paddingLeft="2dp"
-                android:text="@string/fas_lock"
-                android:textColor="@color/colorText"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content" />
-            <EditText
-                android:inputType="textPassword"
-                android:paddingLeft="10dp"
-                android:id="@+id/edit_text_reinput_password"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:textColor="@color/colorText2"
-                android:hint="@string/hint_reinput_password"
-                android:background="@drawable/roundedtext2"/>
-        </LinearLayout>
+
         <Button
-            android:id="@+id/button_Sign_up"
-            android:layout_marginTop="20dp"
+            android:id="@+id/button_Sign_in_2"
             android:layout_gravity="center"
             android:layout_width="200dp"
             android:layout_height="30dp"
             android:background="@drawable/roundedtext"
-            android:text="@string/action_Sign_up"
+            android:text="@string/action_Sign_in"
             android:textColor="@color/colorText"
             android:textStyle="bold"
             />
+
         <TextView
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
@@ -127,18 +87,17 @@
             android:textColor="@color/colorText"
             />
         <Button
-            android:id="@+id/button_Sign_in"
+            android:id="@+id/button_Sign_up_2"
+
             android:layout_gravity="center"
             android:layout_width="200dp"
             android:layout_height="30dp"
             android:background="@drawable/roundedtext"
-            android:text="@string/action_Sign_in"
+            android:text="@string/action_Sign_up"
             android:textColor="@color/colorText"
             android:textStyle="bold"
             />
 
     </LinearLayout>
-
-
 
 </LinearLayout>
