@@ -28,6 +28,7 @@ import com.example.nguyen.cinema.R;
 
 import java.util.ArrayList;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,6 +60,8 @@ public class ProfileActivity extends AppCompatActivity {
         mLinearLayoutProfileBackToListFilm = findViewById(R.id.linear_layout_profile_back_to_list_film);
         mAPIService = ApiUtils.getAPIService();
         mAdapter = new UserListFilmAdapter(new ArrayList<ResponeApi.Movie>(), ProfileActivity.this);
+
+
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ProfileActivity.this,LinearLayoutManager.HORIZONTAL,false);
         mRecyclerViewListFilm.setLayoutManager(layoutManager);
@@ -97,15 +100,16 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void showSignoutDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
         builder.setMessage("Bạn có muốn đăng xuất không?");
         builder.setCancelable(false);
-        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
         });
-        builder.setNegativeButton("Đăng xuất", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Đăng xuất", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 showSignoutDialog();
@@ -121,6 +125,7 @@ public class ProfileActivity extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
 
     // TODO change password
     private void showChooseDialog() {
@@ -148,7 +153,7 @@ public class ProfileActivity extends AppCompatActivity {
                 } else if (mNewPassword.equalsIgnoreCase(mReinputNewPassword) == false){
                     Toast.makeText(mDialogChangePassword.getContext(),"Xác nhận lại mật khẩu không đúng",Toast.LENGTH_LONG).show();
                 } else {
-
+                    postChangePassword();
                 }
             }
         });
@@ -162,6 +167,26 @@ public class ProfileActivity extends AppCompatActivity {
         mDialogChangePassword.show();
     }
 
+    private void postChangePassword() {
+        mAPIService.changePassword(mOldPassword,mNewPassword).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() ==  true){
+                    Toast.makeText(ProfileActivity.this, "Đổi mật khẩu thành công",Toast.LENGTH_LONG).show();
+                    mDialogChangePassword.dismiss();
+                }
+                else {
+                    Toast.makeText(ProfileActivity.this,response.message(),Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(ProfileActivity.this,t.getMessage(),Toast.LENGTH_LONG).show();
+                t.printStackTrace();
+            }
+        });
+    }
 
 
     // TODO recyclerview user's list film

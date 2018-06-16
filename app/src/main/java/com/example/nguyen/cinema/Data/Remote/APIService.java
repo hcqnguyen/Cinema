@@ -47,10 +47,18 @@ public interface APIService {
             @Field("username") String username,
             @Field("password") String password
             );
+
     @FormUrlEncoded
     @POST("/api/v1/auth/sign-in/")
     Call<Login> signIn(
             @Field("email") String email,
             @Field("password") String password
+    );
+
+    @FormUrlEncoded
+    @POST("/api/v1/auth/change-password/")
+    Call<ResponseBody> changePassword(
+            @Field("oldPassword") String oldPassword,
+            @Field("password") String newPassword
     );
 }
