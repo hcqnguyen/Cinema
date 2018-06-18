@@ -1,7 +1,10 @@
 package com.example.nguyen.cinema.Activity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +21,6 @@ import com.example.nguyen.cinema.R;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,10 +64,12 @@ public class SignInActivity extends AppCompatActivity {
 
 
         mButtonSigUp2.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
                 Intent intetn = new Intent(SignInActivity.this,SignUpActivity.class);
-                startActivity(intetn);
+                startActivity(intetn, ActivityOptions.makeCustomAnimation(SignInActivity.this,R.anim.anim_change_activity_from_bottom,R.anim.anim_change_activity_from_right).toBundle());
+
 
             }
         });

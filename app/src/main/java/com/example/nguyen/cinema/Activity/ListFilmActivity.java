@@ -1,7 +1,10 @@
 package com.example.nguyen.cinema.Activity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -10,20 +13,15 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 
 import com.example.nguyen.cinema.Data.Adapter.ListFilmAdapter;
-import com.example.nguyen.cinema.Data.Model.Film;
-import com.example.nguyen.cinema.Data.Model.IconTextView;
 import com.example.nguyen.cinema.Data.Model.ResponeApi;
 import com.example.nguyen.cinema.Data.Remote.APIService;
 import com.example.nguyen.cinema.Data.Remote.ApiUtils;
 import com.example.nguyen.cinema.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,7 +46,9 @@ public class ListFilmActivity extends AppCompatActivity implements ListFilmAdapt
         mAPIService = ApiUtils.getAPIService(pre.getString("token",""));
 
         mAdapter = new ListFilmAdapter(new ArrayList<ResponeApi.Movie>(),ListFilmActivity.this);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ListFilmActivity.this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(ListFilmActivity.this);
+
+
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
@@ -57,24 +57,29 @@ public class ListFilmActivity extends AppCompatActivity implements ListFilmAdapt
         mRecyclerView.setAdapter(mAdapter);
 
         mLinearLayoutOpenProfile.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
                 Intent intent  = new Intent(ListFilmActivity.this, ProfileActivity.class);
-                startActivity(intent);
+                startActivity(intent,ActivityOptions.makeCustomAnimation(ListFilmActivity.this,R.anim.anim_change_activity_from_left,R.anim.anim_change_activity_from_center_to_right).toBundle());
             }
         });
 
         mLinearLayoutOpenCreateFilm.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
                 Intent intent  = new Intent(ListFilmActivity.this,CreateFilmActivity.class);
-                startActivity(intent);
+                startActivity(intent, ActivityOptions.makeCustomAnimation(ListFilmActivity.this,R.anim.anim_change_activity_from_right,R.anim.anim_change_activity_from_center_to_left).toBundle());
             }
         });
+
         loadFilm();
 
 
     }
+
+
 
     private void loadFilm() {
         mAPIService.getFilm().enqueue(new Callback<ResponeApi>() {

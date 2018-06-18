@@ -18,9 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.nguyen.cinema.Data.Adapter.ListFilmAdapter;
 import com.example.nguyen.cinema.Data.Adapter.UserListFilmAdapter;
-import com.example.nguyen.cinema.Data.Model.IconTextView;
 import com.example.nguyen.cinema.Data.Model.Login;
 import com.example.nguyen.cinema.Data.Model.ResponeApi;
 import com.example.nguyen.cinema.Data.Remote.APIService;
@@ -124,8 +122,8 @@ public class ProfileActivity extends AppCompatActivity {
         mLinearLayoutProfileBackToListFilm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this,ListFilmActivity.class);
-                startActivity(intent);
+                finish();
+                ProfileActivity.this.overridePendingTransition(R.anim.anim_change_activity_from_left,R.anim.anim_change_activity_from_center_to_right);
             }
         });
         mButtonSignOut.setOnClickListener(new View.OnClickListener() {
@@ -135,12 +133,19 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        ProfileActivity.this.overridePendingTransition(R.anim.anim_change_activity_from_left,R.anim.anim_change_activity_from_center_to_right);
+    }
+
 
     private void showSignoutDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setMessage("Bạn có muốn đăng xuất không?");
         builder.setCancelable(false);
+
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -161,7 +166,10 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
         AlertDialog alertDialog = builder.create();
+
         alertDialog.show();
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorTitle));
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorTitle));
     }
 
 

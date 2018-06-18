@@ -13,11 +13,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,7 +30,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.example.nguyen.cinema.Data.Model.IconTextView;
 import com.example.nguyen.cinema.Data.Remote.APIService;
 import com.example.nguyen.cinema.Data.Remote.ApiUtils;
 import com.example.nguyen.cinema.R;
@@ -54,7 +51,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Multipart;
 
 public class CreateFilmActivity extends AppCompatActivity {
     private static final String TAG = "CREATE FILM" ;
@@ -112,10 +108,13 @@ public class CreateFilmActivity extends AppCompatActivity {
         mLinearLayoutBackToListFilm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CreateFilmActivity.this,ListFilmActivity.class);
-                startActivity(intent);
+
+                finish();
+                CreateFilmActivity.this.overridePendingTransition(R.anim.anim_change_activity_from_right,R.anim.anim_change_activity_from_center_to_left);
             }
         });
+
+
 
         mButtonChoseImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,6 +155,12 @@ public class CreateFilmActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        CreateFilmActivity.this.overridePendingTransition(R.anim.anim_change_activity_from_right,R.anim.anim_change_activity_from_center_to_left);
     }
 
     public void requestPermission() {
@@ -271,8 +276,8 @@ public class CreateFilmActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Toast.makeText(CreateFilmActivity.this,"Bạn đã tạo phim thành công",Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(CreateFilmActivity.this,ListFilmActivity.class);
-                startActivity(intent);
+                finish();
+                CreateFilmActivity.this.overridePendingTransition(R.anim.anim_change_activity_from_right,R.anim.anim_change_activity_from_center_to_left);
                 Log.e("onResponse", response.message() + "__" + response.toString());
             }
 

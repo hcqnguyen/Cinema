@@ -1,12 +1,18 @@
 package com.example.nguyen.cinema.Activity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.nguyen.cinema.Data.Remote.APIService;
@@ -32,13 +38,14 @@ public class SignUpActivity extends AppCompatActivity {
     Button mButtonSignUp, mButtonSignIn;
     private String mUsername, mEmail, mPassword, mReinputPassword;
     private APIService mAPIService;
-
-
+    LinearLayout mLinearLayoutSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        mLinearLayoutSignUp = findViewById(R.id.linear_layout_sign_up);
 
         mEditTextEmail = findViewById(R.id.edit_text_email);
         mEditTextPassWord = findViewById(R.id.edit_text_password);
@@ -49,12 +56,18 @@ public class SignUpActivity extends AppCompatActivity {
         SharedPreferences pre = getSharedPreferences("access_token",MODE_PRIVATE);
         mAPIService = ApiUtils.getAPIService(pre.getString("token",""));
 
+//        TranslateAnimation translateYAnimation = new TranslateAnimation(0f, 0f, 800f, 0f);
+//        translateYAnimation.setDuration(1000l);
+//        mLinearLayoutSignUp.startAnimation(translateYAnimation);
+
 
         mButtonSignIn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SignUpActivity.this,SignInActivity.class);
-                startActivity(intent);
+                startActivity(intent, ActivityOptions.makeCustomAnimation(SignUpActivity.this,R.anim.anim_change_activity_from_bottom,R.anim.anim_change_activity_from_bottom).toBundle());
+                finish();
             }
         });
         mButtonSignUp.setOnClickListener(new View.OnClickListener() {
