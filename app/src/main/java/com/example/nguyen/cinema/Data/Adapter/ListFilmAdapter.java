@@ -29,6 +29,7 @@ public class ListFilmAdapter  extends RecyclerView.Adapter<ListFilmAdapter.ViewH
     public ListFilmAdapter(List<ResponeApi.Movie> mFilms, Context context) {
         this.mFilms = mFilms;
         this.context = context;
+
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mTextViewFilmTitle, mTextViewFilmGenre, mTextViewFilmRelease, mTextViewUserId;

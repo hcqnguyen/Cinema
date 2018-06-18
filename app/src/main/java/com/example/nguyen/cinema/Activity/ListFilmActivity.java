@@ -100,7 +100,7 @@ public class ListFilmActivity extends AppCompatActivity implements ListFilmAdapt
 
 
 
-    // TODO clickItemRecyclerView
+    // TODO clickItemRecyc
     @Override
     public void onClickItem(int position) {
         Intent intent = new Intent(ListFilmActivity.this, FilmInfoActivity.class);
