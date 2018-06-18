@@ -12,6 +12,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -97,8 +99,6 @@ public class ProfileActivity extends AppCompatActivity {
                        mTextViewPhone.setText(response.body().getUser().getPhone().toString());
                    }
 
-
-                    Toast.makeText(ProfileActivity.this, "Load profile thành công",Toast.LENGTH_LONG).show();
                 }
                 else {
                     Toast.makeText(ProfileActivity.this,response.message(),Toast.LENGTH_LONG).show();
@@ -140,6 +140,8 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
+    // TODO sign out
+
     private void showSignoutDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -178,6 +180,8 @@ public class ProfileActivity extends AppCompatActivity {
         mDialogChangePassword = new Dialog(ProfileActivity.this);
         mDialogChangePassword.setContentView(R.layout.dialog_change_password);
         mEditTextOldPassword = mDialogChangePassword.findViewById(R.id.edit_text_old_password);
+
+
         mEditTextNewPassword = mDialogChangePassword.findViewById(R.id.edit_text_new_password);
         mEditTextReinputNewPassword = mDialogChangePassword.findViewById(R.id.edit_text_reinput_new_password);
         mButtonCancel = mDialogChangePassword.findViewById(R.id.button_cancel);
@@ -211,6 +215,9 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
         mDialogChangePassword.show();
+        mEditTextOldPassword.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(ProfileActivity.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
     private void postChangePassword() {
