@@ -7,12 +7,15 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nguyen.cinema.Data.Remote.APIService;
@@ -78,17 +81,89 @@ public class SignUpActivity extends AppCompatActivity {
                 mPassword = mEditTextPassWord.getText().toString().trim();
                 mReinputPassword = mEditTextReinputPassword.getText().toString().trim();
                 if (mUsername.equalsIgnoreCase("")){
-                    Toast.makeText(SignUpActivity.this,"Vui lòng nhập username!",Toast.LENGTH_LONG).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.toast,
+                            (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                    TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                    text.setText("Vui lòng nhập username");
+
+                    Toast toast = new Toast(getApplicationContext());
+
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
                 }else if (mEmail.equalsIgnoreCase("")){
-                    Toast.makeText(SignUpActivity.this,"Vui lòng nhập email!",Toast.LENGTH_LONG).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.toast,
+                            (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                    TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                    text.setText("Vui lòng nhập email!");
+
+                    Toast toast = new Toast(getApplicationContext());
+
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
                 } else if (validate(mEmail)== false){
-                    Toast.makeText(SignUpActivity.this,"Vui lòng nhập đúng định dạng email!",Toast.LENGTH_LONG).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.toast,
+                            (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                    TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                    text.setText("Vui lòng nhập đúng định dạng email!");
+
+                    Toast toast = new Toast(getApplicationContext());
+
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
                 } else  if (mPassword.equalsIgnoreCase("")) {
-                    Toast.makeText(SignUpActivity.this,"Vui lòng nhập password",Toast.LENGTH_LONG).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.toast,
+                            (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                    TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                    text.setText("Vui lòng nhập password");
+
+                    Toast toast = new Toast(getApplicationContext());
+
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
                 }else if (mReinputPassword.equalsIgnoreCase("")){
-                    Toast.makeText(SignUpActivity.this,"Vui lòng xác nhận lại mật khẩu",Toast.LENGTH_LONG).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.toast,
+                            (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                    TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                    text.setText("Vui lòng nhập xác nhận lại mật khẩu");
+
+                    Toast toast = new Toast(getApplicationContext());
+
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
                 } else if (mPassword.equalsIgnoreCase(mReinputPassword) == false){
-                    Toast.makeText(SignUpActivity.this,"Nhập lại mật khẩu không đúng!",Toast.LENGTH_LONG).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.toast,
+                            (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                    TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                    text.setText("Nhập lại mật khẩu không đúng");
+
+                    Toast toast = new Toast(getApplicationContext());
+
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
                 } else {
                     createAccount();
                 }
@@ -104,7 +179,7 @@ public class SignUpActivity extends AppCompatActivity {
                     Toast.makeText(SignUpActivity.this,"Bạn đã đăng ký thành công!",Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Toast.makeText(SignUpActivity.this,response.message(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignUpActivity.this,"Đăng ký không thành công!",Toast.LENGTH_LONG).show();
                 }
             }
 

@@ -20,7 +20,9 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -155,7 +157,19 @@ public class ProfileActivity extends AppCompatActivity {
 
                 }
                 else {
-                    Toast.makeText(ProfileActivity.this,response.message(),Toast.LENGTH_LONG).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.toast,
+                            (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                    TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                    text.setText("Load thông tin không thành công");
+
+                    Toast toast = new Toast(getApplicationContext());
+
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
                 }
             }
 
@@ -215,7 +229,19 @@ public class ProfileActivity extends AppCompatActivity {
 
                             @Override
                             public void onFailure(Call<Login> call, Throwable t) {
-                                Toast.makeText(ProfileActivity.this,t.getMessage(),Toast.LENGTH_LONG).show();
+                                LayoutInflater inflater = getLayoutInflater();
+                                View layout = inflater.inflate(R.layout.toast,
+                                        (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                                TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                                text.setText("Đổi username thành công");
+
+                                Toast toast = new Toast(getApplicationContext());
+
+                                toast.setDuration(Toast.LENGTH_LONG);
+                                toast.setView(layout);
+                                toast.show();
                                 t.printStackTrace();
                             }
                         });
@@ -255,7 +281,7 @@ public class ProfileActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Call<Login> call, Response<Login> response) {
                                 if (response.isSuccessful() == true){
-                                    Toast.makeText(ProfileActivity.this,"Bạn đã đổi username thành công",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(ProfileActivity.this,"Bạn đã đổi số điện thoại thành công",Toast.LENGTH_LONG).show();
                                     mDialogChangePhoneNumber.dismiss();
                                     mTextViewPhone.setText(mEditTextChangePhoneNumber.getText().toString().trim());
                                 }
@@ -263,7 +289,19 @@ public class ProfileActivity extends AppCompatActivity {
 
                             @Override
                             public void onFailure(Call<Login> call, Throwable t) {
-                                Toast.makeText(ProfileActivity.this,t.getMessage(),Toast.LENGTH_LONG).show();
+                                LayoutInflater inflater = getLayoutInflater();
+                                View layout = inflater.inflate(R.layout.toast,
+                                        (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                                TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                                text.setText("Đổi số điện thoại không thành công");
+
+                                Toast toast = new Toast(getApplicationContext());
+
+                                toast.setDuration(Toast.LENGTH_LONG);
+                                toast.setView(layout);
+                                toast.show();
                                 t.printStackTrace();
                             }
                         });
@@ -346,13 +384,13 @@ public class ProfileActivity extends AppCompatActivity {
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                     String path = saveImage(bitmap);
-                    Toast.makeText(ProfileActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(ProfileActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
                     mCicrcleImgVAvatar.setImageBitmap(bitmap);
                     isChooseImage = true;
                     editAvatar();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Toast.makeText(ProfileActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(ProfileActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -360,7 +398,7 @@ public class ProfileActivity extends AppCompatActivity {
             Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
             mCicrcleImgVAvatar.setImageBitmap(thumbnail);
             saveImage(thumbnail);
-            Toast.makeText(ProfileActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(ProfileActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
             isChooseImage = true;
             editAvatar();
         }
@@ -400,7 +438,19 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<RequestBody> call, Response<RequestBody> response) {
                 if (response.isSuccessful()){
-                    Toast.makeText(ProfileActivity.this,"Bạn đã đổi avatar thành công",Toast.LENGTH_LONG).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.toast,
+                            (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                    TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                    text.setText("Bạn đã đổi avatar thành công");
+
+                    Toast toast = new Toast(getApplicationContext());
+
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
                 }
                 else
                 {
@@ -410,7 +460,19 @@ public class ProfileActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<RequestBody> call, Throwable t) {
-                Toast.makeText(ProfileActivity.this,t.getMessage(),Toast.LENGTH_LONG).show();
+                LayoutInflater inflater = getLayoutInflater();
+                View layout = inflater.inflate(R.layout.toast,
+                        (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                text.setText("Đổi avatar không thành công");
+
+                Toast toast = new Toast(getApplicationContext());
+
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
                 t.printStackTrace();
             }
         });
@@ -508,13 +570,61 @@ public class ProfileActivity extends AppCompatActivity {
                 mNewPassword = mEditTextNewPassword.getText().toString().trim();
                 mReinputNewPassword  = mEditTextReinputNewPassword.getText().toString().trim();
                 if (mOldPassword.equalsIgnoreCase("")){
-                    Toast.makeText(mDialogChangePassword.getContext(),"Vui lòng nhập mật khẩu cũ",Toast.LENGTH_LONG).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.toast,
+                            (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                    TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                    text.setText("Vui lòng nhập mật khẩu cũ");
+
+                    Toast toast = new Toast(getApplicationContext());
+
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
                 } else if (mNewPassword.equalsIgnoreCase("")){
-                    Toast.makeText(mDialogChangePassword.getContext(),"Vui lòng nhập mật khẩu mới",Toast.LENGTH_LONG).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.toast,
+                            (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                    TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                    text.setText("Vui lòng nhập mật khẩu mới");
+
+                    Toast toast = new Toast(getApplicationContext());
+
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
                 } else if (mReinputNewPassword.equalsIgnoreCase("")){
-                    Toast.makeText(mDialogChangePassword.getContext(),"Vui lòng nhập lại mật khẩu mới",Toast.LENGTH_LONG).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.toast,
+                            (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                    TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                    text.setText("Vui lòng nhập lại mật khẩu mới");
+
+                    Toast toast = new Toast(getApplicationContext());
+
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
                 } else if (mNewPassword.equalsIgnoreCase(mReinputNewPassword) == false){
-                    Toast.makeText(mDialogChangePassword.getContext(),"Xác nhận lại mật khẩu không đúng",Toast.LENGTH_LONG).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.toast,
+                            (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                    TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                    text.setText("Xác nhận lại mật khẩu mới không đúngs");
+
+                    Toast toast = new Toast(getApplicationContext());
+
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
                 } else {
                     postChangePassword();
                 }
@@ -538,17 +648,53 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful() ==  true){
-                    Toast.makeText(ProfileActivity.this, "Đổi mật khẩu thành công",Toast.LENGTH_LONG).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.toast,
+                            (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                    TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                    text.setText("Đổi mật khẩu thành công");
+
+                    Toast toast = new Toast(getApplicationContext());
+
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
                     mDialogChangePassword.dismiss();
                 }
                 else {
-                    Toast.makeText(ProfileActivity.this,response.message(),Toast.LENGTH_LONG).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.toast,
+                            (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                    TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                    text.setText("Đổi mật khẩu không thành công");
+
+                    Toast toast = new Toast(getApplicationContext());
+
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(ProfileActivity.this,t.getMessage(),Toast.LENGTH_LONG).show();
+                LayoutInflater inflater = getLayoutInflater();
+                View layout = inflater.inflate(R.layout.toast,
+                        (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                text.setText("Đổi mật khẩu không thành công");
+
+                Toast toast = new Toast(getApplicationContext());
+
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
                 t.printStackTrace();
             }
         });

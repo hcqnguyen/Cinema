@@ -131,6 +131,6 @@ public class ListFilmActivity extends AppCompatActivity implements ListFilmAdapt
 
     @Override
     public void onRefresh() {
-        
+
     }
 }

@@ -17,7 +17,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -145,9 +147,33 @@ public class CreateFilmActivity extends AppCompatActivity {
                 mDiscription = mEditTextDiscription.getText().toString().trim();
                 mGenre = mSpinnerGenre.getSelectedItem().toString().trim();
                 if (isChooseImage == false){
-                    Toast.makeText(CreateFilmActivity.this,"Vui lòng chọn ảnh cho phim!",Toast.LENGTH_LONG).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.toast,
+                            (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                    TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                    text.setText("Vui lòng chọn ảnh cho phim");
+
+                    Toast toast = new Toast(getApplicationContext());
+
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
                 } else if (mTitle.equalsIgnoreCase("")){
-                    Toast.makeText(CreateFilmActivity.this,"Vui lòng nhập tên phim!",Toast.LENGTH_LONG).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.toast,
+                            (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                    TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                    text.setText("Vui lòng nhập tên phim");
+
+                    Toast toast = new Toast(getApplicationContext());
+
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
                 }
                 else{
 
@@ -234,13 +260,13 @@ public class CreateFilmActivity extends AppCompatActivity {
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                     String path = saveImage(bitmap);
-                    Toast.makeText(CreateFilmActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(CreateFilmActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
                     mImageViewAvatar.setImageBitmap(bitmap);
                     isChooseImage = true;
 
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Toast.makeText(CreateFilmActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(CreateFilmActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -248,7 +274,7 @@ public class CreateFilmActivity extends AppCompatActivity {
             Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
             mImageViewAvatar.setImageBitmap(thumbnail);
             saveImage(thumbnail);
-            Toast.makeText(CreateFilmActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(CreateFilmActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
             isChooseImage = true;
         }
 
@@ -275,7 +301,19 @@ public class CreateFilmActivity extends AppCompatActivity {
         mAPIService.uploadFileWithPartMap( map, body).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Toast.makeText(CreateFilmActivity.this,"Bạn đã tạo phim thành công",Toast.LENGTH_LONG).show();
+                LayoutInflater inflater = getLayoutInflater();
+                View layout = inflater.inflate(R.layout.toast,
+                        (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                text.setText("Bạn đã tạo phim thành công");
+
+                Toast toast = new Toast(getApplicationContext());
+
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
                 finish();
                 CreateFilmActivity.this.overridePendingTransition(R.anim.anim_change_activity_from_right,R.anim.anim_change_activity_from_center_to_left);
                 Log.e("onResponse", response.message() + "__" + response.toString());
@@ -283,7 +321,19 @@ public class CreateFilmActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(CreateFilmActivity.this,"Tạo phim không thành công",Toast.LENGTH_LONG).show();
+                LayoutInflater inflater = getLayoutInflater();
+                View layout = inflater.inflate(R.layout.toast,
+                        (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                text.setText("Tạo phim không thành công");
+
+                Toast toast = new Toast(getApplicationContext());
+
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
                 t.printStackTrace();
             }
         });
