@@ -11,4 +11,7 @@
         android:bottomLeftRadius="8dp"
         android:topRightRadius="8dp"
         android:topLeftRadius="8dp"/>
+    <selector xmlns:android="http://schemas.android.com/apk/res/android">
+        <item android:state_pressed="true" />
+    </selector>
 </shape>

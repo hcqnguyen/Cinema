@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
@@ -72,6 +73,9 @@ public class CreateFilmActivity extends AppCompatActivity {
     private String mTitle, mGenre, mRelease, mDiscription;
     private APIService mAPIService;
     File mImageFile;
+    boolean isChooseImage = false;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,14 +141,17 @@ public class CreateFilmActivity extends AppCompatActivity {
         mButtonCreateFilm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mEditTextTitle.getText().toString() =="" || mImageFile.isFile() == false){
-                    Toast.makeText(CreateFilmActivity.this,"Vui lòng nhập đầy đủ thông tin!",Toast.LENGTH_LONG).show();
-                }
-                else{
                 mTitle = mEditTextTitle.getText().toString().trim();
                 mRelease = mTextViewRelease.getText().toString().trim();
                 mDiscription = mEditTextDiscription.getText().toString().trim();
                 mGenre = mSpinnerGenre.getSelectedItem().toString().trim();
+                if (isChooseImage == false){
+                    Toast.makeText(CreateFilmActivity.this,"Vui lòng chọn ảnh cho phim!",Toast.LENGTH_LONG).show();
+                } else if (mTitle.equalsIgnoreCase("")){
+                    Toast.makeText(CreateFilmActivity.this,"Vui lòng nhập tên phim!",Toast.LENGTH_LONG).show();
+                }
+                else{
+
                 requestPermission();
                 }
             }
@@ -224,6 +231,7 @@ public class CreateFilmActivity extends AppCompatActivity {
                     String path = saveImage(bitmap);
                     Toast.makeText(CreateFilmActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
                     mImageViewAvatar.setImageBitmap(bitmap);
+                    isChooseImage = true;
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -236,6 +244,7 @@ public class CreateFilmActivity extends AppCompatActivity {
             mImageViewAvatar.setImageBitmap(thumbnail);
             saveImage(thumbnail);
             Toast.makeText(CreateFilmActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+            isChooseImage = true;
         }
 
     }
@@ -256,11 +265,14 @@ public class CreateFilmActivity extends AppCompatActivity {
         map.put("release", release);
         map.put("description", description);
 
-        mAPIService = ApiUtils.getAPIService();
+        SharedPreferences pre = getSharedPreferences("access_token",MODE_PRIVATE);
+        mAPIService = ApiUtils.getAPIService(pre.getString("token",""));
         mAPIService.uploadFileWithPartMap( map, body).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Toast.makeText(CreateFilmActivity.this,"Bạn đã tạo phim thành công",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(CreateFilmActivity.this,ListFilmActivity.class);
+                startActivity(intent);
                 Log.e("onResponse", response.message() + "__" + response.toString());
             }
 

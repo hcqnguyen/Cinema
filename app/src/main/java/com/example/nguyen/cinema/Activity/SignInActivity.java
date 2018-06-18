@@ -15,6 +15,9 @@ import com.example.nguyen.cinema.Data.Remote.APIService;
 import com.example.nguyen.cinema.Data.Remote.ApiUtils;
 import com.example.nguyen.cinema.R;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,7 +30,15 @@ public class SignInActivity extends AppCompatActivity {
     String mEmail,mPassword;
     APIService mAPIService;
     final String TAG = "--- SIGN IN ACITIVTY";
+    public static String token;
 
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+    public static boolean validate(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailStr);
+        return matcher.find();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +50,7 @@ public class SignInActivity extends AppCompatActivity {
         {
             Intent intent = new Intent(SignInActivity.this, ListFilmActivity.class);
             startActivity(intent);
+            finish();
         }
 
         mButtonSigIn2 =findViewById(R.id.button_Sign_in_2);
@@ -46,7 +58,7 @@ public class SignInActivity extends AppCompatActivity {
         mEditTextPassword2 = findViewById(R.id.edit_text_password_2);
         mEditTextEmail2 = findViewById(R.id.edit_text_email_2);
 
-        mAPIService = ApiUtils.getAPIService();
+        mAPIService = ApiUtils.getAPIService(pre.getString("token",""));
 
 
         mButtonSigUp2.setOnClickListener(new View.OnClickListener() {
@@ -60,12 +72,13 @@ public class SignInActivity extends AppCompatActivity {
         mButtonSigIn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mEmail = mEditTextEmail2.getText().toString().trim();
-                mPassword = mEditTextPassword2.getText().toString().trim();
-                if (mEmail == null){
+                mEmail = mEditTextEmail2.getText().toString();
+                mPassword = mEditTextPassword2.getText().toString();
+                if (mEmail.equalsIgnoreCase("")){
                     Toast.makeText(SignInActivity.this,"Vui lòng nhập email!",Toast.LENGTH_LONG).show();
-                }
-                else if (mEmail == null){
+                }else if (validate(mEmail) == false){
+                    Toast.makeText(SignInActivity.this,"Vui lòng nhập đúng định dạng email!",Toast.LENGTH_LONG).show();
+                } else if (mPassword.equalsIgnoreCase("")){
                     Toast.makeText(SignInActivity.this,"Vui lòng nhập password!",Toast.LENGTH_LONG).show();
                 }
                 else{
@@ -85,7 +98,8 @@ public class SignInActivity extends AppCompatActivity {
                 }
                 else {
                     Boolean isLogin = true;
-                    String token = response.body().getToken();
+                    token = "";
+                     token = response.body().getToken();
                     SharedPreferences pre = getSharedPreferences("access_token",MODE_PRIVATE);
                     SharedPreferences.Editor editor = pre.edit();
                     editor.putString("token",token);
@@ -96,6 +110,8 @@ public class SignInActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(SignInActivity.this, ListFilmActivity.class);
                     startActivity(intent);
+                    finish();
+
                     Log.e(TAG,"DANG NHAP THANH CONG");
                 }
 
@@ -106,5 +122,8 @@ public class SignInActivity extends AppCompatActivity {
                 Log.e(TAG,"DANG NHAP THAT BAI");
             }
         });
+    }
+    public String getToken(){
+        return this.token;
     }
 }

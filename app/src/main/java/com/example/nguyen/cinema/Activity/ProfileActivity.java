@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nguyen.cinema.Data.Adapter.ListFilmAdapter;
@@ -41,6 +42,7 @@ public class ProfileActivity extends AppCompatActivity {
     Button mButtonChangePassword, mButtonSignOut, mButtonOk, mButtonCancel;
     EditText mEditTextOldPassword,mEditTextNewPassword,mEditTextReinputNewPassword ;
     RecyclerView mRecyclerViewListFilm;
+    TextView mTextViewEmail, mTextViewPhone, mTextViewUsername;
     APIService mAPIService;
     private UserListFilmAdapter mAdapter;
     private Dialog mDialogChangePassword;
@@ -58,7 +60,14 @@ public class ProfileActivity extends AppCompatActivity {
         mButtonSignOut = findViewById(R.id.button_sign_out);
         mRecyclerViewListFilm = findViewById(R.id.recyclerview_profile_list_film);
         mLinearLayoutProfileBackToListFilm = findViewById(R.id.linear_layout_profile_back_to_list_film);
-        mAPIService = ApiUtils.getAPIService();
+        mTextViewEmail = findViewById(R.id.text_view_profile_email);
+        mTextViewPhone = findViewById(R.id.text_view_profile_number_phone);
+        mTextViewUsername = findViewById(R.id.text_view_profile_username);
+
+
+        SharedPreferences pre = getSharedPreferences("access_token",MODE_PRIVATE);
+        mAPIService = ApiUtils.getAPIService(pre.getString("token",""));
+
         mAdapter = new UserListFilmAdapter(new ArrayList<ResponeApi.Movie>(), ProfileActivity.this);
 
 
@@ -73,7 +82,28 @@ public class ProfileActivity extends AppCompatActivity {
 
         addEvents();
         loadMyFilm();
+        loadProfile();
 
+    }
+
+    private void loadProfile() {
+        mAPIService.getProfile().enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+
+                    Toast.makeText(ProfileActivity.this, "Load profile thành công",Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(ProfileActivity.this,response.message(),Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
     }
 
     private void addEvents() {
@@ -144,11 +174,11 @@ public class ProfileActivity extends AppCompatActivity {
                 mOldPassword = mEditTextOldPassword.getText().toString().trim();
                 mNewPassword = mEditTextNewPassword.getText().toString().trim();
                 mReinputNewPassword  = mEditTextReinputNewPassword.getText().toString().trim();
-                if (mOldPassword == null){
+                if (mOldPassword.equalsIgnoreCase("")){
                     Toast.makeText(mDialogChangePassword.getContext(),"Vui lòng nhập mật khẩu cũ",Toast.LENGTH_LONG).show();
-                } else if (mNewPassword == null){
+                } else if (mNewPassword.equalsIgnoreCase("")){
                     Toast.makeText(mDialogChangePassword.getContext(),"Vui lòng nhập mật khẩu mới",Toast.LENGTH_LONG).show();
-                } else if (mReinputNewPassword == null){
+                } else if (mReinputNewPassword.equalsIgnoreCase("")){
                     Toast.makeText(mDialogChangePassword.getContext(),"Vui lòng nhập lại mật khẩu mới",Toast.LENGTH_LONG).show();
                 } else if (mNewPassword.equalsIgnoreCase(mReinputNewPassword) == false){
                     Toast.makeText(mDialogChangePassword.getContext(),"Xác nhận lại mật khẩu không đúng",Toast.LENGTH_LONG).show();

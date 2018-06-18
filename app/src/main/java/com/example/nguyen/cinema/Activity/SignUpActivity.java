@@ -1,6 +1,7 @@
 package com.example.nguyen.cinema.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,8 @@ import com.example.nguyen.cinema.Data.Remote.ApiUtils;
 import com.example.nguyen.cinema.R;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -21,12 +24,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.nguyen.cinema.Activity.SignInActivity.validate;
+
 public class SignUpActivity extends AppCompatActivity {
 
     EditText mEditTextUsername, mEditTextEmail, mEditTextPassWord, mEditTextReinputPassword;
     Button mButtonSignUp, mButtonSignIn;
     private String mUsername, mEmail, mPassword, mReinputPassword;
     private APIService mAPIService;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +46,8 @@ public class SignUpActivity extends AppCompatActivity {
         mEditTextReinputPassword = findViewById(R.id.edit_text_reinput_password);
         mButtonSignIn = findViewById(R.id.button_Sign_in);
         mButtonSignUp = findViewById(R.id.button_Sign_up);
-        mAPIService = ApiUtils.getAPIService();
+        SharedPreferences pre = getSharedPreferences("access_token",MODE_PRIVATE);
+        mAPIService = ApiUtils.getAPIService(pre.getString("token",""));
 
 
         mButtonSignIn.setOnClickListener(new View.OnClickListener() {
@@ -56,14 +64,19 @@ public class SignUpActivity extends AppCompatActivity {
                 mUsername = mEditTextUsername.getText().toString().trim();
                 mPassword = mEditTextPassWord.getText().toString().trim();
                 mReinputPassword = mEditTextReinputPassword.getText().toString().trim();
-                if (mEditTextEmail.getText().toString() == null || mEditTextPassWord.getText().toString() == null
-                        || mEditTextUsername.getText().toString() == null || mEditTextReinputPassword.getText().toString() ==  null ){
-                    Toast.makeText(SignUpActivity.this,"Vui lòng nhập đầy đủ thông tin!",Toast.LENGTH_LONG).show();
-                }
-                else if (mPassword.equalsIgnoreCase(mReinputPassword) == false){
+                if (mUsername.equalsIgnoreCase("")){
+                    Toast.makeText(SignUpActivity.this,"Vui lòng nhập username!",Toast.LENGTH_LONG).show();
+                }else if (mEmail.equalsIgnoreCase("")){
+                    Toast.makeText(SignUpActivity.this,"Vui lòng nhập email!",Toast.LENGTH_LONG).show();
+                } else if (validate(mEmail)== false){
+                    Toast.makeText(SignUpActivity.this,"Vui lòng nhập đúng định dạng email!",Toast.LENGTH_LONG).show();
+                } else  if (mPassword.equalsIgnoreCase("")) {
+                    Toast.makeText(SignUpActivity.this,"Vui lòng nhập password",Toast.LENGTH_LONG).show();
+                }else if (mReinputPassword.equalsIgnoreCase("")){
+                    Toast.makeText(SignUpActivity.this,"Vui lòng xác nhận lại mật khẩu",Toast.LENGTH_LONG).show();
+                } else if (mPassword.equalsIgnoreCase(mReinputPassword) == false){
                     Toast.makeText(SignUpActivity.this,"Nhập lại mật khẩu không đúng!",Toast.LENGTH_LONG).show();
-                }
-                else {
+                } else {
                     createAccount();
                 }
             }

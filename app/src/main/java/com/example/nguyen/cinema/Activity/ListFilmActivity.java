@@ -1,6 +1,7 @@
 package com.example.nguyen.cinema.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -29,7 +30,7 @@ import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
-public class ListFilmActivity extends AppCompatActivity {
+public class ListFilmActivity extends AppCompatActivity implements ListFilmAdapter.onClickRecyclerView {
     RecyclerView mRecyclerView;
     private ListFilmAdapter mAdapter;
     private APIService mAPIService;
@@ -43,7 +44,8 @@ public class ListFilmActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recyclerview_list_film);
         mLinearLayoutOpenCreateFilm = findViewById(R.id.linear_layout_open_create_film);
         mLinearLayoutOpenProfile = findViewById(R.id.linear_layout_go_open_profile);
-        mAPIService = ApiUtils.getAPIService();
+        SharedPreferences pre = getSharedPreferences("access_token",MODE_PRIVATE);
+        mAPIService = ApiUtils.getAPIService(pre.getString("token",""));
 
         mAdapter = new ListFilmAdapter(new ArrayList<ResponeApi.Movie>(),ListFilmActivity.this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ListFilmActivity.this);
@@ -94,5 +96,14 @@ public class ListFilmActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+
+
+    // TODO clickItemRecyclerView
+    @Override
+    public void onClickItem(int position) {
+        Intent intent = new Intent(ListFilmActivity.this, FilmInfoActivity.class);
+
     }
 }

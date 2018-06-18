@@ -23,7 +23,8 @@
         <activity android:name=".Activity.SignUpActivity" />
         <activity android:name=".Activity.CreateFilmActivity" />
         <activity android:name=".Activity.ListFilmActivity" />
-        <activity android:name=".Activity.ProfileActivity"></activity>
+        <activity android:name=".Activity.ProfileActivity" />
+        <activity android:name=".Activity.FilmInfoActivity"></activity>
     </application>
 
 </manifest>

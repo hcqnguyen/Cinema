@@ -61,4 +61,7 @@ public interface APIService {
             @Field("oldPassword") String oldPassword,
             @Field("password") String newPassword
     );
+
+    @GET("/api/v1/users/")
+    Call<ResponseBody> getProfile();
 }
