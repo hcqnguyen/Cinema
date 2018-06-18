@@ -72,15 +72,24 @@ public interface APIService {
 
     @FormUrlEncoded
     @PUT("/api/v1/users/")
-    Call<Login> changePhonenumber(@Header("x-access-token") String access_token,
+    Call<Login> changePhonenumber(
+            @Header("x-access-token") String access_token,
                             @Field("phone") String phone
 
     );
 
     @FormUrlEncoded
     @PUT("/api/v1/users/")
-    Call<Login> changeUsername(@Header("x-access-token") String access_token,
+    Call<Login> changeUsername(
+            @Header("x-access-token") String access_token,
                                   @Field("username") String username
+
+    );
+    @Multipart
+    @PUT("/api/v1/users/")
+    Call<RequestBody> changeAvatar(
+            @Header("x-access-token") String access_token,
+            @Part MultipartBody.Part file
 
     );
 

@@ -1,9 +1,18 @@
 package com.example.nguyen.cinema.Activity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.nguyen.cinema.Data.Adapter.UserListFilmAdapter;
 import com.example.nguyen.cinema.Data.Model.Login;
 import com.example.nguyen.cinema.Data.Model.ResponeApi;
@@ -27,8 +37,18 @@ import com.example.nguyen.cinema.Data.Remote.APIService;
 import com.example.nguyen.cinema.Data.Remote.ApiUtils;
 import com.example.nguyen.cinema.R;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +57,8 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 public class ProfileActivity extends AppCompatActivity {
+
+
 
     LinearLayout mLinearLayoutProfileBackToListFilm, mLinearLayoutEditPhoneNumber, mLInearLayoutEditUsername;
     Button mButtonChangePassword, mButtonSignOut, mButtonOk, mButtonCancel;
@@ -49,10 +71,19 @@ public class ProfileActivity extends AppCompatActivity {
     EditText mEditTextOldPassword,mEditTextNewPassword,mEditTextReinputNewPassword, mEditTextChangeUsername, mEditTextChangePhoneNumber ;
     RecyclerView mRecyclerViewListFilm;
     TextView mTextViewEmail, mTextViewPhone, mTextViewUsername;
+
+    CircleImageView mCicrcleImgVAvatar;
+
     APIService mAPIService;
     private UserListFilmAdapter mAdapter;
     private Dialog mDialogChangePassword, mDialogChangeUsername, mDialogChangePhoneNumber;
     String mOldPassword, mNewPassword, mReinputNewPassword, mPhoneNumber,token, mUsername;
+    private static final String IMAGE_DIRECTORY = "/demonuts";
+    int REQUEST_IMAGE_CAPTURE = 1, GALLERY  = 0;
+    File mImageFile;
+    boolean isChooseImage = false;
+
+    final String DOMAIN = "https://nam-cinema.herokuapp.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +100,10 @@ public class ProfileActivity extends AppCompatActivity {
         mTextViewEmail = findViewById(R.id.text_view_profile_email);
         mTextViewPhone = findViewById(R.id.text_view_profile_number_phone);
         mTextViewUsername = findViewById(R.id.text_view_profile_username);
+
+        mCicrcleImgVAvatar = findViewById(R.id.circle_avatar);
+
+
 
 
         SharedPreferences pre = getSharedPreferences("access_token",MODE_PRIVATE);
@@ -93,6 +128,8 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    // TODO load profile
+
     private void loadProfile(String token) {
         mAPIService.getProfile(token).enqueue(new Callback<Login>() {
             @Override
@@ -101,6 +138,13 @@ public class ProfileActivity extends AppCompatActivity {
                     mTextViewUsername.setText(response.body().getUser().getUsername().toString().trim());
                     mUsername = mTextViewUsername.getText().toString().trim();
                     mTextViewEmail.setText(response.body().getUser().getEmail().toString().trim());
+
+                    Glide.with(ProfileActivity.this)
+                            .load(DOMAIN+response.body().getUser().getAvatar().toString())
+                            .override(300, 400)
+                            .error(R.drawable.ic_launcher_background)
+                            .into(mCicrcleImgVAvatar);
+
                    if (response.body().getUser().getPhone()== null){
                        mTextViewPhone.setText("");
                        mPhoneNumber = mTextViewPhone.getText().toString();
@@ -143,6 +187,8 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+
+        //TODO edit Username
 
         mLInearLayoutEditUsername.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,6 +235,8 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
         });
+
+        // TODO edit Phone number
         mLinearLayoutEditPhoneNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -235,7 +283,169 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
         });
+
+        // TODO edit Avatar
+        mCicrcleImgVAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestPermission();
+
+            }
+        });
     }
+
+    public void requestPermission() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                ) {
+            ActivityCompat.requestPermissions(ProfileActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE},
+                    1001);
+            return;
+        }
+        showBrowserImage();
+    }
+
+    public void choosePhotoFromGallary() {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent, GALLERY);
+    }
+
+    private void takePhotoFromCamera() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1001) {
+            if ((grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED )
+                    &&( grantResults[1] == PackageManager.PERMISSION_GRANTED )
+                    ) {
+                showBrowserImage();
+            }
+        }
+    }
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == this.RESULT_CANCELED) {
+            return;
+        }
+        if (requestCode == GALLERY) {
+            if (data != null) {
+                Uri contentURI = data.getData();
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                    String path = saveImage(bitmap);
+                    Toast.makeText(ProfileActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+                    mCicrcleImgVAvatar.setImageBitmap(bitmap);
+                    isChooseImage = true;
+                    editAvatar();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(ProfileActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+            mCicrcleImgVAvatar.setImageBitmap(thumbnail);
+            saveImage(thumbnail);
+            Toast.makeText(ProfileActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+            isChooseImage = true;
+            editAvatar();
+        }
+
+    }
+
+    private void showBrowserImage() {
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(ProfileActivity.this);
+        pictureDialog.setTitle("Select Action");
+        String[] pictureDialogItems = {
+                "Select photo from gallery",
+                "Capture photo from camera" };
+        pictureDialog.setItems(pictureDialogItems,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                choosePhotoFromGallary();
+                                break;
+                            case 1:
+                                takePhotoFromCamera();
+                                break;
+                        }
+                    }
+                });
+        pictureDialog.show();
+    }
+
+    private void editAvatar() {
+        if (mImageFile == null) return;
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"),mImageFile);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("avatar",mImageFile.getName(),reqFile);
+
+
+        mAPIService.changeAvatar(token,body).enqueue(new Callback<RequestBody>() {
+            @Override
+            public void onResponse(Call<RequestBody> call, Response<RequestBody> response) {
+                if (response.isSuccessful()){
+                    Toast.makeText(ProfileActivity.this,"Bạn đã đổi avatar thành công",Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    Toast.makeText(ProfileActivity.this,response.message(),Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RequestBody> call, Throwable t) {
+                Toast.makeText(ProfileActivity.this,t.getMessage(),Toast.LENGTH_LONG).show();
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private String saveImage(Bitmap mybitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        mybitmap.compress(Bitmap.CompressFormat.PNG, 90, bytes);
+        File wallpaperDirectory = new File(
+                Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY);
+        // have the object build the directory structure, if needed.
+        if (!wallpaperDirectory.exists()) {
+            wallpaperDirectory.mkdirs();
+        }
+
+        try {
+            File f = new File(wallpaperDirectory, Calendar.getInstance()
+                    .getTimeInMillis() + ".jpg");
+            f.createNewFile();
+            FileOutputStream fo = new FileOutputStream(f);
+            fo.write(bytes.toByteArray());
+            MediaScannerConnection.scanFile(this,
+                    new String[]{f.getPath()},
+                    new String[]{"image/jpeg"}, null);
+            fo.close();
+            mImageFile = f;
+            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
+
+            return f.getAbsolutePath();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return "";
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

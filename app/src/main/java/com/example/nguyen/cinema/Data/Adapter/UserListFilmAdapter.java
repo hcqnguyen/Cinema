@@ -54,6 +54,7 @@ public class UserListFilmAdapter extends RecyclerView.Adapter<UserListFilmAdapte
 
         Glide.with(context)
                 .load(DOMAIN +movie.getCover())
+                .placeholder(R.drawable.bg_sign_up_2)
                 .override(200, 200)
                 .error(R.drawable.ic_launcher_background)
                 .into(cover);
