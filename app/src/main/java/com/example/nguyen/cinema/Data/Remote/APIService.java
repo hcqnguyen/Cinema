@@ -63,5 +63,8 @@ public interface APIService {
     );
 
     @GET("/api/v1/users/")
-    Call<ResponseBody> getProfile();
+    Call<Login> getProfile();
+
+    @GET("/api/v1/users/:id/movies")
+    Call<ResponeApi> getUsermovie();
 }

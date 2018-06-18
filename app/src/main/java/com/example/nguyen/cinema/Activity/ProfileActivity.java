@@ -87,10 +87,18 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void loadProfile() {
-        mAPIService.getProfile().enqueue(new Callback<ResponseBody>() {
+        mAPIService.getProfile().enqueue(new Callback<Login>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<Login> call, Response<Login> response) {
                 if(response.isSuccessful()){
+                    mTextViewUsername.setText(response.body().getUser().getUsername().toString().trim());
+                    mTextViewEmail.setText(response.body().getUser().getEmail().toString().trim());
+                   if (response.body().getUser().getPhone()== null){
+                       mTextViewPhone.setText("");
+                   } else {
+                       mTextViewPhone.setText(response.body().getUser().getPhone().toString());
+                   }
+
 
                     Toast.makeText(ProfileActivity.this, "Load profile thành công",Toast.LENGTH_LONG).show();
                 }
@@ -100,7 +108,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<Login> call, Throwable t) {
 
             }
         });
@@ -221,7 +229,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     // TODO recyclerview user's list film
     private void loadMyFilm() {
-        mAPIService.getFilm().enqueue(new Callback<ResponeApi>() {
+        mAPIService.getUsermovie().enqueue(new Callback<ResponeApi>() {
             @Override
             public void onResponse(Call<ResponeApi> call, Response<ResponeApi> response) {
                 if (response.isSuccessful()) {

@@ -82,7 +82,7 @@
                                     android:id="@+id/text_view_profile_username"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="KAKALOT"
+
                                     android:textStyle="bold"
                                     android:textSize="25dp"
 
@@ -122,7 +122,7 @@
                                     android:layout_marginLeft="10dp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="qweasdz184@yahoo.com.vn"
+
                                     android:textSize="17dp"
                                     android:layout_marginTop="10dp"
                                     />
@@ -147,7 +147,7 @@
                                     android:layout_marginLeft="10dp"
                                     android:layout_width="200dp"
                                     android:layout_height="wrap_content"
-                                    android:text="0156548965896"
+
                                     android:textSize="17dp"
                                     android:layout_marginTop="10dp"
                                     />
