@@ -20,25 +20,25 @@ public class RetrofitClient {
 
 
         if (retrofit==null) {
-            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-            httpClient.addInterceptor(new Interceptor() {
-                @Override
-                public Response intercept(Chain chain) throws IOException {
-                    Request original = chain.request();
-
-                    Request request = original.newBuilder()
-                            .header("x-access-token",
-                                    token)
-                            .header("Content-Type", "application/json")
-                            .method(original.method(), original.body())
-                            .build();
-
-                    return chain.proceed(request);
-                }
-            });
+//            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+//            httpClient.addInterceptor(new Interceptor() {
+//                @Override
+//                public Response intercept(Chain chain) throws IOException {
+//                    Request original = chain.request();
+//
+//                    Request request = original.newBuilder()
+//                            .header("x-access-token",
+//                                    token)
+//                            .header("Content-Type", "application/json")
+//                            .method(original.method(), original.body())
+//                            .build();
+//
+//                    return chain.proceed(request);
+//                }
+//            });
             retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
-                    .client(httpClient.build())
+//                    .client(httpClient.build())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

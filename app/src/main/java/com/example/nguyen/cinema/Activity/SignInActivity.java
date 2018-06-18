@@ -110,8 +110,6 @@ public class SignInActivity extends AppCompatActivity {
                     editor.putBoolean("isLogin",isLogin);
                     editor.commit();
 
-
-
                     Intent intent = new Intent(SignInActivity.this, ListFilmActivity.class);
                     startActivity(intent);
                     finish();
@@ -127,7 +125,5 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
     }
-    public String getToken(){
-        return this.token;
-    }
+
 }

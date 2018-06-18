@@ -46,7 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
     APIService mAPIService;
     private UserListFilmAdapter mAdapter;
     private Dialog mDialogChangePassword;
-    String mOldPassword, mNewPassword, mReinputNewPassword;
+    String mOldPassword, mNewPassword, mReinputNewPassword, mPhoneNumber,token, mUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +67,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         SharedPreferences pre = getSharedPreferences("access_token",MODE_PRIVATE);
         mAPIService = ApiUtils.getAPIService(pre.getString("token",""));
+        token = pre.getString("token","");
 
         mAdapter = new UserListFilmAdapter(new ArrayList<ResponeApi.Movie>(), ProfileActivity.this);
 
@@ -82,21 +83,24 @@ public class ProfileActivity extends AppCompatActivity {
 
         addEvents();
         loadMyFilm();
-        loadProfile();
+        loadProfile(pre.getString("token",""));
 
     }
 
-    private void loadProfile() {
-        mAPIService.getProfile().enqueue(new Callback<Login>() {
+    private void loadProfile(String token) {
+        mAPIService.getProfile(token).enqueue(new Callback<Login>() {
             @Override
             public void onResponse(Call<Login> call, Response<Login> response) {
                 if(response.isSuccessful()){
                     mTextViewUsername.setText(response.body().getUser().getUsername().toString().trim());
+                    mUsername = mTextViewUsername.getText().toString().trim();
                     mTextViewEmail.setText(response.body().getUser().getEmail().toString().trim());
                    if (response.body().getUser().getPhone()== null){
                        mTextViewPhone.setText("");
+                       mPhoneNumber = mTextViewPhone.getText().toString();
                    } else {
                        mTextViewPhone.setText(response.body().getUser().getPhone().toString());
+                       mPhoneNumber = mTextViewPhone.getText().toString();
                    }
 
                 }
@@ -132,6 +136,53 @@ public class ProfileActivity extends AppCompatActivity {
                 showSignoutDialog();
             }
         });
+
+        mLinearLayoutEditPhoneNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+                final EditText input = new EditText(ProfileActivity.this);
+                input.setText(mPhoneNumber.trim());
+                builder.setView(input).
+                setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).
+
+                setPositiveButton("Đổi số điện thoại", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        mAPIService.changePhonenumber(token,input.getText().toString().trim()).enqueue(new Callback<Login>() {
+                            @Override
+                            public void onResponse(Call<Login> call, Response<Login> response) {
+                                if (response.isSuccessful()){
+                                    Toast.makeText(ProfileActivity.this,"Bạn đã đổi số điện thoại thành công",Toast.LENGTH_LONG).show();
+                                    mTextViewPhone.setText(input.getText().toString());
+
+                                }
+
+                            }
+                            @Override
+                            public void onFailure(Call<Login> call, Throwable t) {
+
+                            }
+                        });
+                        Intent intent = new Intent(ProfileActivity.this, SignInActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                builder.show();
+                input.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(ProfileActivity.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
+            }
+        });
     }
     @Override
     public void onBackPressed() {
@@ -157,7 +208,7 @@ public class ProfileActivity extends AppCompatActivity {
         builder.setPositiveButton("Đăng xuất", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                showSignoutDialog();
+                //showSignoutDialog();
                 SharedPreferences pre = getSharedPreferences("access_token",MODE_PRIVATE);
                 SharedPreferences.Editor editor = pre.edit();
                 editor.clear();
@@ -221,7 +272,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void postChangePassword() {
-        mAPIService.changePassword(mOldPassword,mNewPassword).enqueue(new Callback<ResponseBody>() {
+        mAPIService.changePassword(token,mOldPassword,mNewPassword).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful() ==  true){
@@ -244,7 +295,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     // TODO recyclerview user's list film
     private void loadMyFilm() {
-        mAPIService.getUsermovie().enqueue(new Callback<ResponeApi>() {
+        mAPIService.getUsermovie(token).enqueue(new Callback<ResponeApi>() {
             @Override
             public void onResponse(Call<ResponeApi> call, Response<ResponeApi> response) {
                 if (response.isSuccessful()) {

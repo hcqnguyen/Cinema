@@ -14,6 +14,7 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 
@@ -22,6 +23,7 @@ import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 
 public interface APIService {
+
 
 //    @FormUrlEncoded
 //    @POST("/api/v1/movies/")
@@ -57,14 +59,23 @@ public interface APIService {
 
     @FormUrlEncoded
     @POST("/api/v1/auth/change-password/")
-    Call<ResponseBody> changePassword(
+    Call<ResponseBody> changePassword(@Header("x-access-token") String access_token,
             @Field("oldPassword") String oldPassword,
             @Field("password") String newPassword
     );
 
     @GET("/api/v1/users/")
-    Call<Login> getProfile();
+    Call<Login> getProfile(@Header("x-access-token") String access_token);
 
     @GET("/api/v1/users/:id/movies")
-    Call<ResponeApi> getUsermovie();
+    Call<ResponeApi> getUsermovie(@Header("x-access-token") String access_token);
+
+    @FormUrlEncoded
+    @PUT("/api/v1/users/")
+    Call<Login> changePhonenumber(@Header("x-access-token") String access_token,
+                            @Field("phone") String phone
+
+    );
+
+
 }
