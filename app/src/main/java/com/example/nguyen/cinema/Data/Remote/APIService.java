@@ -77,5 +77,11 @@ public interface APIService {
 
     );
 
+    @FormUrlEncoded
+    @PUT("/api/v1/users/")
+    Call<Login> changeUsername(@Header("x-access-token") String access_token,
+                                  @Field("username") String username
+
+    );
 
 }

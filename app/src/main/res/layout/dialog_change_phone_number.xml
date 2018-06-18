@@ -10,20 +10,20 @@
         android:textStyle="bold"
         android:textColor="@color/colorTitle"
         android:layout_gravity="center"
-        android:text="@string/msg_change_username"
+        android:text="@string/msg_change_phone_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <EditText
-        android:id="@+id/edit_text_chang_username"
+        android:id="@+id/edit_text_change_phone_number"
         android:paddingLeft="10dp"
         android:layout_marginTop="15dp"
         android:layout_gravity="center"
-
+        android:inputType="number"
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:background="@drawable/roundedtext">
-    <requestFocus />
+        <requestFocus />
     </EditText>
     <LinearLayout
         android:layout_marginTop="15dp"
@@ -37,7 +37,7 @@
         <Button
             android:background="@drawable/button_effect"
             android:layout_marginLeft="10dp"
-            android:id="@+id/button_cancel_change_username"
+            android:id="@+id/button_cancel_change_phone_number"
             android:textColor="@color/colorText"
             android:layout_weight="1"
             android:text="@string/action_cancel"
@@ -47,7 +47,7 @@
         <Button
             android:background="@drawable/button_effect"
             android:layout_marginRight="10dp"
-            android:id="@+id/button_ok_change_username"
+            android:id="@+id/button_ok_change_phone_number"
             android:textColor="@color/colorText"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"

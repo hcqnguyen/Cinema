@@ -40,12 +40,18 @@ public class ProfileActivity extends AppCompatActivity {
 
     LinearLayout mLinearLayoutProfileBackToListFilm, mLinearLayoutEditPhoneNumber, mLInearLayoutEditUsername;
     Button mButtonChangePassword, mButtonSignOut, mButtonOk, mButtonCancel;
-    EditText mEditTextOldPassword,mEditTextNewPassword,mEditTextReinputNewPassword ;
+
+    // Button change username
+    Button mButtonOkChangeUsername, mButtonCancelChangeUsername;
+    // Button change phone number
+    Button mButtonOkChangePhoneNumber, mButtonCancelChangePhoneNumber;
+
+    EditText mEditTextOldPassword,mEditTextNewPassword,mEditTextReinputNewPassword, mEditTextChangeUsername, mEditTextChangePhoneNumber ;
     RecyclerView mRecyclerViewListFilm;
     TextView mTextViewEmail, mTextViewPhone, mTextViewUsername;
     APIService mAPIService;
     private UserListFilmAdapter mAdapter;
-    private Dialog mDialogChangePassword;
+    private Dialog mDialogChangePassword, mDialogChangeUsername, mDialogChangePhoneNumber;
     String mOldPassword, mNewPassword, mReinputNewPassword, mPhoneNumber,token, mUsername;
 
     @Override
@@ -137,47 +143,93 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+
+        mLInearLayoutEditUsername.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialogChangeUsername = new Dialog(ProfileActivity.this);
+                mDialogChangeUsername.setContentView(R.layout.dialog_change_username);
+                mEditTextChangeUsername = mDialogChangeUsername.findViewById(R.id.edit_text_chang_username);
+
+                mButtonOkChangeUsername = mDialogChangeUsername.findViewById(R.id.button_ok_change_username);
+                mButtonCancelChangeUsername = mDialogChangeUsername.findViewById(R.id.button_cancel_change_username);
+
+                mButtonOkChangeUsername.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mAPIService.changeUsername(token,mEditTextChangeUsername.getText().toString().trim()).enqueue(new Callback<Login>() {
+                            @Override
+                            public void onResponse(Call<Login> call, Response<Login> response) {
+                                if (response.isSuccessful() == true){
+                                    Toast.makeText(ProfileActivity.this,"Bạn đã đổi username thành công",Toast.LENGTH_LONG).show();
+                                    mDialogChangeUsername.dismiss();
+                                    mTextViewUsername.setText(mEditTextChangeUsername.getText().toString().trim());
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Login> call, Throwable t) {
+                                Toast.makeText(ProfileActivity.this,t.getMessage(),Toast.LENGTH_LONG).show();
+                                t.printStackTrace();
+                            }
+                        });
+                    }
+                });
+
+                mButtonCancelChangeUsername.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mDialogChangeUsername.dismiss();
+                    }
+                });
+                mDialogChangeUsername.show();
+                mEditTextChangeUsername.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(ProfileActivity.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
+            }
+        });
         mLinearLayoutEditPhoneNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
-                final EditText input = new EditText(ProfileActivity.this);
-                input.setText(mPhoneNumber.trim());
-                builder.setView(input).
-                setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                }).
+                mDialogChangePhoneNumber = new Dialog(ProfileActivity.this);
+                mDialogChangePhoneNumber.setContentView(R.layout.dialog_change_phone_number);
+                mEditTextChangePhoneNumber = mDialogChangePhoneNumber.findViewById(R.id.edit_text_change_phone_number);
 
-                setPositiveButton("Đổi số điện thoại", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                mEditTextChangePhoneNumber.setText(mTextViewPhone.getText().toString());
+                mButtonOkChangePhoneNumber = mDialogChangePhoneNumber.findViewById(R.id.button_ok_change_phone_number);
+                mButtonCancelChangePhoneNumber = mDialogChangePhoneNumber.findViewById(R.id.button_cancel_change_phone_number);
 
-                        mAPIService.changePhonenumber(token,input.getText().toString().trim()).enqueue(new Callback<Login>() {
+                mButtonOkChangePhoneNumber.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mAPIService.changePhonenumber(token,mEditTextChangePhoneNumber.getText().toString().trim()).enqueue(new Callback<Login>() {
                             @Override
                             public void onResponse(Call<Login> call, Response<Login> response) {
-                                if (response.isSuccessful()){
-                                    Toast.makeText(ProfileActivity.this,"Bạn đã đổi số điện thoại thành công",Toast.LENGTH_LONG).show();
-                                    mTextViewPhone.setText(input.getText().toString());
-
+                                if (response.isSuccessful() == true){
+                                    Toast.makeText(ProfileActivity.this,"Bạn đã đổi username thành công",Toast.LENGTH_LONG).show();
+                                    mDialogChangePhoneNumber.dismiss();
+                                    mTextViewPhone.setText(mEditTextChangePhoneNumber.getText().toString().trim());
                                 }
-
                             }
+
                             @Override
                             public void onFailure(Call<Login> call, Throwable t) {
-
+                                Toast.makeText(ProfileActivity.this,t.getMessage(),Toast.LENGTH_LONG).show();
+                                t.printStackTrace();
                             }
                         });
-                        Intent intent = new Intent(ProfileActivity.this, SignInActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
                     }
                 });
-                AlertDialog alertDialog = builder.create();
-                builder.show();
-                input.requestFocus();
+
+                mButtonCancelChangePhoneNumber.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mDialogChangePhoneNumber.dismiss();
+                    }
+                });
+                mDialogChangePhoneNumber.show();
+                mEditTextChangePhoneNumber.requestFocus();
                 InputMethodManager imm = (InputMethodManager) getSystemService(ProfileActivity.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 

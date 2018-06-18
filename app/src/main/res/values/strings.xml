@@ -23,6 +23,8 @@
     <string name="msg_or"> hoặc </string>
     <string name="msg_my_film">Phim của tôi</string>
     <string name="msg_change_password">Thay đổi mật khẩu</string>
+    <string name="msg_change_username">Thay đổi username</string>
+    <string name="msg_change_phone_number">Thay đổi số điện thoại</string>
     <string name="msg_sign_out">Bạn có muốn đăng xuất ?</string>
 
     <!-- Title -->
