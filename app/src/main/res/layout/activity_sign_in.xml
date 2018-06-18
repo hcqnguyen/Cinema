@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/bg_sign_up_2"
+    android:background="@drawable/bg_sgn_up_6"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.SignInActivity">
@@ -13,7 +13,7 @@
         android:layout_height="150dp"
         android:gravity="center"
         android:textStyle="bold"
-        android:textSize="20dp"
+        android:textSize="30dp"
         android:textColor="@color/colorText"
         android:layout_gravity="center"
         />
@@ -32,12 +32,14 @@
                 android:text="@string/fas_email"
                 android:textColor="@color/colorText"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                />
 
             <EditText
                 android:id="@+id/edit_text_email_2"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="35dp"
                 android:layout_marginLeft="26dp"
                 android:background="@drawable/roundedtext2"
                 android:hint="@string/hint_email"
@@ -53,15 +55,18 @@
                 android:text="@string/fas_lock"
                 android:paddingLeft="2dp"
                 android:textColor="@color/colorText"
-                android:layout_width="40dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="40dp"
                 />
             <EditText
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="27dp"
                 android:inputType="textPassword"
                 android:paddingLeft="10dp"
                 android:id="@+id/edit_text_password_2"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="35dp"
                 android:textColor="@color/colorText2"
                 android:hint="@string/hint_password"
                 android:background="@drawable/roundedtext2"/>
@@ -70,12 +75,13 @@
         <Button
             android:id="@+id/button_Sign_in_2"
             android:layout_gravity="center"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
             android:background="@drawable/button_login_effect"
             android:text="@string/action_Sign_in"
             android:textColor="@color/colorText"
             android:textStyle="bold"
+            android:textSize="18dp"
             />
 
         <TextView
@@ -90,13 +96,13 @@
         <Button
             android:id="@+id/button_Sign_up_2"
             android:layout_gravity="center"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
             android:background="@drawable/button_login_effect"
             android:text="@string/action_Sign_up"
             android:textColor="@color/colorText"
             android:textStyle="bold"
-
+            android:textSize="18dp"
             />
 
 

@@ -36,8 +36,8 @@
     <!-- Hint -->
     <string name="hint_username"> Username</string>
     <string name="hint_email"> Email</string>
-    <string name="hint_password"> Password</string>
-    <string name="hint_reinput_password"> Reinput Password</string>
-    <string name="hint_old_password"> Old Password</string>
-    <string name="hint_new_password"> New password</string>
+    <string name="hint_password"> Mật khẩu</string>
+    <string name="hint_reinput_password"> Xác nhận lại mật khẩu</string>
+    <string name="hint_old_password"> Mật khẩu cũ</string>
+    <string name="hint_new_password"> Mật khẩu mới</string>
 </resources>

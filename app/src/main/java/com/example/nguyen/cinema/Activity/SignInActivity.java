@@ -138,7 +138,19 @@ public class SignInActivity extends AppCompatActivity {
             public void onResponse(Call<Login> call, Response<Login> response) {
                 if (response.isSuccessful() == false)
                 {
-                    Toast.makeText(SignInActivity.this,response.message(),Toast.LENGTH_LONG).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.toast,
+                            (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                    TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                    text.setText("Sai tài khoản hoặc mật khẩu");
+
+                    Toast toast = new Toast(getApplicationContext());
+
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
                 }
                 else {
                     Boolean isLogin = true;

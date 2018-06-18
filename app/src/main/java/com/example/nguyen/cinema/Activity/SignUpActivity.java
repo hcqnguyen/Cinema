@@ -7,6 +7,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nguyen.cinema.Data.Model.Login;
 import com.example.nguyen.cinema.Data.Remote.APIService;
 import com.example.nguyen.cinema.Data.Remote.ApiUtils;
 import com.example.nguyen.cinema.R;
@@ -42,6 +44,15 @@ public class SignUpActivity extends AppCompatActivity {
     private String mUsername, mEmail, mPassword, mReinputPassword;
     private APIService mAPIService;
     LinearLayout mLinearLayoutSignUp;
+    String token;
+
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+    public static boolean validate(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailStr);
+        return matcher.find();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,7 +188,38 @@ public class SignUpActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()){
                     Toast.makeText(SignUpActivity.this,"Bạn đã đăng ký thành công!",Toast.LENGTH_LONG).show();
-                }
+                    mAPIService.signIn(mEmail,mPassword).enqueue(new Callback<Login>() {
+                        @Override
+                        public void onResponse(Call<Login> call, Response<Login> response) {
+                            if (response.isSuccessful() == false)
+                            {
+                                Toast.makeText(SignUpActivity.this,response.message(),Toast.LENGTH_LONG).show();
+                            }
+                            else {
+                                Boolean isLogin = true;
+                                token = "";
+                                token = response.body().getToken();
+                                SharedPreferences pre = getSharedPreferences("access_token",MODE_PRIVATE);
+                                SharedPreferences.Editor editor = pre.edit();
+                                editor.putString("token",token);
+                                editor.putBoolean("isLogin",isLogin);
+                                editor.commit();
+
+                                Intent intent = new Intent(SignUpActivity.this, ListFilmActivity.class);
+                                startActivity(intent);
+                                finish();
+
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<Login> call, Throwable t) {
+
+                        }
+                    });
+                      }
                 else {
                     Toast.makeText(SignUpActivity.this,"Đăng ký không thành công!",Toast.LENGTH_LONG).show();
                 }

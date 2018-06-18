@@ -16,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +25,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -73,7 +76,7 @@ public class ProfileActivity extends AppCompatActivity {
     EditText mEditTextOldPassword,mEditTextNewPassword,mEditTextReinputNewPassword, mEditTextChangeUsername, mEditTextChangePhoneNumber ;
     RecyclerView mRecyclerViewListFilm;
     TextView mTextViewEmail, mTextViewPhone, mTextViewUsername;
-
+    CardView mCardViewProfile, mCardViewListFilm;
     CircleImageView mCicrcleImgVAvatar;
 
     APIService mAPIService;
@@ -102,9 +105,18 @@ public class ProfileActivity extends AppCompatActivity {
         mTextViewEmail = findViewById(R.id.text_view_profile_email);
         mTextViewPhone = findViewById(R.id.text_view_profile_number_phone);
         mTextViewUsername = findViewById(R.id.text_view_profile_username);
-
+        mCardViewProfile = findViewById(R.id.card_view_profile);
+        mCardViewListFilm = findViewById(R.id.card_view_list_film);
         mCicrcleImgVAvatar = findViewById(R.id.circle_avatar);
 
+        Animation alpha = AnimationUtils.loadAnimation(this, R.anim.alpha);
+        Animation fade = AnimationUtils.loadAnimation(this,R.anim.fade);
+        Animation clockwise = AnimationUtils.loadAnimation(this,R.anim.clockwise);
+        Animation blink = AnimationUtils.loadAnimation(this,R.anim.blink);
+
+        mCicrcleImgVAvatar.startAnimation(alpha);
+        mCardViewListFilm.startAnimation(fade);
+        mCardViewProfile.startAnimation(blink);
 
 
 
@@ -222,8 +234,14 @@ public class ProfileActivity extends AppCompatActivity {
                             public void onResponse(Call<Login> call, Response<Login> response) {
                                 if (response.isSuccessful() == true){
                                     Toast.makeText(ProfileActivity.this,"Bạn đã đổi username thành công",Toast.LENGTH_LONG).show();
-                                    mDialogChangeUsername.dismiss();
+                                    ;
                                     mTextViewUsername.setText(mEditTextChangeUsername.getText().toString().trim());
+                                    View view = (View) mDialogChangeUsername.getWindow().getDecorView();
+
+                                    InputMethodManager imm = (InputMethodManager) getSystemService(ProfileActivity.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+                                    mDialogChangeUsername.dismiss();
                                 }
                             }
 
@@ -251,6 +269,12 @@ public class ProfileActivity extends AppCompatActivity {
                 mButtonCancelChangeUsername.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        View view = (View) mDialogChangeUsername.getWindow().getDecorView();
+
+                        InputMethodManager imm = (InputMethodManager) getSystemService(ProfileActivity.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+
                         mDialogChangeUsername.dismiss();
                     }
                 });
@@ -277,40 +301,82 @@ public class ProfileActivity extends AppCompatActivity {
                 mButtonOkChangePhoneNumber.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mAPIService.changePhonenumber(token,mEditTextChangePhoneNumber.getText().toString().trim()).enqueue(new Callback<Login>() {
-                            @Override
-                            public void onResponse(Call<Login> call, Response<Login> response) {
-                                if (response.isSuccessful() == true){
-                                    Toast.makeText(ProfileActivity.this,"Bạn đã đổi số điện thoại thành công",Toast.LENGTH_LONG).show();
-                                    mDialogChangePhoneNumber.dismiss();
-                                    mTextViewPhone.setText(mEditTextChangePhoneNumber.getText().toString().trim());
+                        if (mEditTextChangePhoneNumber.getText().toString().trim().equalsIgnoreCase("")){
+                            LayoutInflater inflater = getLayoutInflater();
+                            View layout = inflater.inflate(R.layout.toast,
+                                    (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                            TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                            text.setText("Số điện thoại muốn đổi không được để trống");
+
+                            Toast toast = new Toast(getApplicationContext());
+
+                            toast.setDuration(Toast.LENGTH_LONG);
+                            toast.setView(layout);
+                            toast.show();
+
+                        }
+                        else {
+                            mAPIService.changePhonenumber(token, mEditTextChangePhoneNumber.getText().toString().trim()).enqueue(new Callback<Login>() {
+                                @Override
+                                public void onResponse(Call<Login> call, Response<Login> response) {
+                                    if (response.isSuccessful() == true) {
+                                        LayoutInflater inflater = getLayoutInflater();
+                                        View layout = inflater.inflate(R.layout.toast,
+                                                (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                                        TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                                        text.setText("Bạn đã đổi số điện thoại thành công");
+
+                                        Toast toast = new Toast(getApplicationContext());
+
+                                        toast.setDuration(Toast.LENGTH_LONG);
+                                        toast.setView(layout);
+                                        toast.show();
+
+
+                                        mTextViewPhone.setText(mEditTextChangePhoneNumber.getText().toString().trim());
+                                        View view = (View) mDialogChangePhoneNumber.getWindow().getDecorView();
+
+                                        InputMethodManager imm = (InputMethodManager) getSystemService(ProfileActivity.INPUT_METHOD_SERVICE);
+                                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+                                        mDialogChangePhoneNumber.dismiss();
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onFailure(Call<Login> call, Throwable t) {
-                                LayoutInflater inflater = getLayoutInflater();
-                                View layout = inflater.inflate(R.layout.toast,
-                                        (ViewGroup) findViewById(R.id.toast_layout_root));
+                                @Override
+                                public void onFailure(Call<Login> call, Throwable t) {
+                                    LayoutInflater inflater = getLayoutInflater();
+                                    View layout = inflater.inflate(R.layout.toast,
+                                            (ViewGroup) findViewById(R.id.toast_layout_root));
 
 
-                                TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
-                                text.setText("Đổi số điện thoại không thành công");
+                                    TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                                    text.setText("Đổi số điện thoại không thành công");
 
-                                Toast toast = new Toast(getApplicationContext());
+                                    Toast toast = new Toast(getApplicationContext());
 
-                                toast.setDuration(Toast.LENGTH_LONG);
-                                toast.setView(layout);
-                                toast.show();
-                                t.printStackTrace();
-                            }
-                        });
+                                    toast.setDuration(Toast.LENGTH_LONG);
+                                    toast.setView(layout);
+                                    toast.show();
+                                    t.printStackTrace();
+                                }
+                            });
+                        }
                     }
                 });
 
                 mButtonCancelChangePhoneNumber.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        View view = (View) mDialogChangePhoneNumber.getWindow().getDecorView();
+
+                            InputMethodManager imm = (InputMethodManager) getSystemService(ProfileActivity.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
                         mDialogChangePhoneNumber.dismiss();
                     }
                 });
@@ -634,6 +700,12 @@ public class ProfileActivity extends AppCompatActivity {
         mButtonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                View view = (View) mDialogChangePassword.getWindow().getDecorView();
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(ProfileActivity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+
                 mDialogChangePassword.dismiss();
             }
         });
@@ -661,6 +733,12 @@ public class ProfileActivity extends AppCompatActivity {
                     toast.setDuration(Toast.LENGTH_LONG);
                     toast.setView(layout);
                     toast.show();
+                    View view = (View) mDialogChangePassword.getWindow().getDecorView();
+
+                    InputMethodManager imm = (InputMethodManager) getSystemService(ProfileActivity.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+
                     mDialogChangePassword.dismiss();
                 }
                 else {

@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_sign_up_2"
+    android:background="@drawable/bg_sgn_up_6"
     tools:context=".Activity.SignUpActivity">
 
         <TextView
@@ -15,7 +15,7 @@
             android:layout_height="150dp"
             android:gravity="center"
             android:textStyle="bold"
-            android:textSize="20dp"
+            android:textSize="30dp"
             android:textColor="@color/colorText"
             android:layout_gravity="center"
             />
@@ -33,7 +33,9 @@
             <com.example.nguyen.cinema.Data.Model.IconTextView
                 android:text="@string/fas_fa_user"
                 android:layout_width="wrap_content"
+                android:paddingLeft="2dp"
                 android:layout_height="wrap_content"
+                android:textSize="30dp"
                 android:textColor="@color/colorText"
                 />
             <EditText
@@ -41,7 +43,7 @@
                 android:layout_marginLeft="29dp"
                 android:id="@+id/edit_text_username"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="35dp"
                 android:textColor="@color/colorText2"
                 android:background="@drawable/roundedtext2"
                 android:hint="@string/hint_username"
@@ -55,12 +57,13 @@
                 android:text="@string/fas_email"
                 android:textColor="@color/colorText"
                 android:layout_width="wrap_content"
+                android:textSize="28dp"
                 android:layout_height="wrap_content" />
             <EditText
                 android:paddingLeft="10dp"
                 android:id="@+id/edit_text_email"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="35dp"
                 android:layout_marginLeft="26dp"
                 android:textColor="@color/colorText2"
                 android:background="@drawable/roundedtext2"
@@ -73,17 +76,19 @@
             android:layout_height="wrap_content">
             <com.example.nguyen.cinema.Data.Model.IconTextView
                 android:text="@string/fas_lock"
-                android:paddingLeft="2dp"
+                android:paddingLeft="4dp"
                 android:textColor="@color/colorText"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
+                android:textSize="30dp"
                 />
             <EditText
+                android:layout_marginLeft="13dp"
                 android:inputType="textPassword"
                 android:paddingLeft="10dp"
                 android:id="@+id/edit_text_password"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="35dp"
                 android:textColor="@color/colorText2"
                 android:hint="@string/hint_password"
                 android:background="@drawable/roundedtext2"/>
@@ -92,17 +97,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <com.example.nguyen.cinema.Data.Model.IconTextView
-                android:paddingLeft="2dp"
+                android:paddingLeft="4dp"
                 android:text="@string/fas_lock"
                 android:textColor="@color/colorText"
                 android:layout_width="40dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                />
             <EditText
+                android:layout_marginLeft="13dp"
                 android:inputType="textPassword"
                 android:paddingLeft="10dp"
                 android:id="@+id/edit_text_reinput_password"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="35dp"
                 android:textColor="@color/colorText2"
                 android:hint="@string/hint_reinput_password"
                 android:background="@drawable/roundedtext2"/>
@@ -111,10 +119,11 @@
             android:id="@+id/button_Sign_up"
             android:layout_marginTop="20dp"
             android:layout_gravity="center"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
             android:background="@drawable/roundedtext"
             android:text="@string/action_Sign_up"
+            android:textSize="18dp"
             android:textColor="@color/colorText"
             android:textStyle="bold"
             />
@@ -130,8 +139,9 @@
         <Button
             android:id="@+id/button_Sign_in"
             android:layout_gravity="center"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
+            android:layout_width="match_parent"
+            android:textSize="18dp"
+            android:layout_height="35dp"
             android:background="@drawable/roundedtext"
             android:text="@string/action_Sign_in"
             android:textColor="@color/colorText"
