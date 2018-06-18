@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -28,11 +29,12 @@ import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
-public class ListFilmActivity extends AppCompatActivity implements ListFilmAdapter.onClickRecyclerView {
+public class ListFilmActivity extends AppCompatActivity implements ListFilmAdapter.onClickRecyclerView, SwipeRefreshLayout.OnRefreshListener {
     RecyclerView mRecyclerView;
     private ListFilmAdapter mAdapter;
     private APIService mAPIService;
     LinearLayout mLinearLayoutOpenProfile, mLinearLayoutOpenCreateFilm;
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,18 @@ public class ListFilmActivity extends AppCompatActivity implements ListFilmAdapt
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
         mRecyclerView.setAdapter(mAdapter);
+        mSwipeRefreshLayout = findViewById(R.id.swipe_container);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadFilm();
+            }
+        });
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
+
 
         mLinearLayoutOpenProfile.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -88,6 +102,8 @@ public class ListFilmActivity extends AppCompatActivity implements ListFilmAdapt
                 if (response.isSuccessful()) {
                     mAdapter.updateAnswers(response.body().getMovies());
                     Log.i("LISTFILM ACITIVTY", "__");
+                    mAdapter.notifyDataSetChanged();
+                    mSwipeRefreshLayout.setRefreshing(false);
                 } else {
                     int statusCode = response.code();
                     Log.e(TAG, response.message() + "__");
@@ -110,5 +126,11 @@ public class ListFilmActivity extends AppCompatActivity implements ListFilmAdapt
     public void onClickItem(int position) {
         Intent intent = new Intent(ListFilmActivity.this, FilmInfoActivity.class);
 
+    }
+
+
+    @Override
+    public void onRefresh() {
+        
     }
 }
