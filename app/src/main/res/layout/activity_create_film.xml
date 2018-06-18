@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:text="@string/action_choose_image"
             android:layout_gravity="center"
-            android:background="@drawable/roundedbutton"
+            android:background="@drawable/button_effect"
             android:textColor="@color/colorText"
 
             />
@@ -156,7 +156,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/action_create_film"
-        android:background="@drawable/roundedbutton"
+        android:background="@drawable/button_effect"
         android:textColor="@color/colorText"
         android:elevation="20dp"
 

@@ -178,8 +178,8 @@
                                     android:layout_weight="1"
                                     android:text="@string/action_change_password"
                                     android:textColor="@color/colorText"
-                                    android:background="@drawable/roundedbutton"
-                                    android:layout_width="80dp"
+                                    android:background="@drawable/button_effect"
+                                    android:layout_width="105dp"
                                     android:layout_height="wrap_content" />
                                 <Button
                                     android:id="@+id/button_sign_out"
@@ -187,7 +187,7 @@
                                     android:layout_weight="1"
                                     android:text="@string/action_sign_out"
                                     android:textColor="@color/colorText"
-                                    android:background="@drawable/roundedbutton"
+                                    android:background="@drawable/button_effect"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content" />
 

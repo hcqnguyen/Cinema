@@ -13,13 +13,5 @@
             android:topRightRadius="8dp"
             android:topLeftRadius="8dp"/>
 
-    <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-        <item android:drawable = "@drawable/roundedtext.xml"
-            android:state_pressed="true"></item>
-        <item android:drawable="@drawable/roundedbutton.xml"></item>
-
-
-    </selector>
     </shape>
