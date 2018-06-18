@@ -29,7 +29,7 @@ import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
-public class ListFilmActivity extends AppCompatActivity implements ListFilmAdapter.onClickRecyclerView, SwipeRefreshLayout.OnRefreshListener {
+public class ListFilmActivity extends AppCompatActivity implements  SwipeRefreshLayout.OnRefreshListener {
     RecyclerView mRecyclerView;
     private ListFilmAdapter mAdapter;
     private APIService mAPIService;
@@ -39,15 +39,16 @@ public class ListFilmActivity extends AppCompatActivity implements ListFilmAdapt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_list_film);
 
         mRecyclerView = findViewById(R.id.recyclerview_list_film);
         mLinearLayoutOpenCreateFilm = findViewById(R.id.linear_layout_open_create_film);
         mLinearLayoutOpenProfile = findViewById(R.id.linear_layout_go_open_profile);
-        SharedPreferences pre = getSharedPreferences("access_token",MODE_PRIVATE);
-        mAPIService = ApiUtils.getAPIService(pre.getString("token",""));
+        SharedPreferences pre = getSharedPreferences("access_token", MODE_PRIVATE);
+        mAPIService = ApiUtils.getAPIService(pre.getString("token", ""));
 
-        mAdapter = new ListFilmAdapter(new ArrayList<ResponeApi.Movie>(),ListFilmActivity.this);
+        mAdapter = new ListFilmAdapter(new ArrayList<ResponeApi.Movie>(), ListFilmActivity.this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(ListFilmActivity.this);
 
 
@@ -74,8 +75,8 @@ public class ListFilmActivity extends AppCompatActivity implements ListFilmAdapt
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
-                Intent intent  = new Intent(ListFilmActivity.this, ProfileActivity.class);
-                startActivity(intent,ActivityOptions.makeCustomAnimation(ListFilmActivity.this,R.anim.anim_change_activity_from_left,R.anim.anim_change_activity_from_center_to_right).toBundle());
+                Intent intent = new Intent(ListFilmActivity.this, ProfileActivity.class);
+                startActivity(intent, ActivityOptions.makeCustomAnimation(ListFilmActivity.this, R.anim.anim_change_activity_from_left, R.anim.anim_change_activity_from_center_to_right).toBundle());
             }
         });
 
@@ -83,8 +84,8 @@ public class ListFilmActivity extends AppCompatActivity implements ListFilmAdapt
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
-                Intent intent  = new Intent(ListFilmActivity.this,CreateFilmActivity.class);
-                startActivity(intent, ActivityOptions.makeCustomAnimation(ListFilmActivity.this,R.anim.anim_change_activity_from_right,R.anim.anim_change_activity_from_center_to_left).toBundle());
+                Intent intent = new Intent(ListFilmActivity.this, CreateFilmActivity.class);
+                startActivity(intent, ActivityOptions.makeCustomAnimation(ListFilmActivity.this, R.anim.anim_change_activity_from_right, R.anim.anim_change_activity_from_center_to_left).toBundle());
             }
         });
 
@@ -122,11 +123,8 @@ public class ListFilmActivity extends AppCompatActivity implements ListFilmAdapt
 
 
     // TODO clickItemRecyc
-    @Override
-    public void onClickItem(int position) {
-        Intent intent = new Intent(ListFilmActivity.this, FilmInfoActivity.class);
 
-    }
+
 
 
     @Override

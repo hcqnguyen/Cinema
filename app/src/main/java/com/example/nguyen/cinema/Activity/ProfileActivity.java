@@ -113,9 +113,9 @@ public class ProfileActivity extends AppCompatActivity {
         Animation fade = AnimationUtils.loadAnimation(this,R.anim.fade);
         Animation clockwise = AnimationUtils.loadAnimation(this,R.anim.clockwise);
         Animation blink = AnimationUtils.loadAnimation(this,R.anim.blink);
-
+        Animation move = AnimationUtils.loadAnimation(this, R.anim.move);
         mCicrcleImgVAvatar.startAnimation(alpha);
-        mCardViewListFilm.startAnimation(fade);
+        mCardViewListFilm.startAnimation(move);
         mCardViewProfile.startAnimation(blink);
 
 
@@ -223,46 +223,76 @@ public class ProfileActivity extends AppCompatActivity {
                 mDialogChangeUsername.setContentView(R.layout.dialog_change_username);
                 mEditTextChangeUsername = mDialogChangeUsername.findViewById(R.id.edit_text_chang_username);
 
+                mEditTextChangeUsername.setText(mTextViewUsername.getText().toString());
                 mButtonOkChangeUsername = mDialogChangeUsername.findViewById(R.id.button_ok_change_username);
                 mButtonCancelChangeUsername = mDialogChangeUsername.findViewById(R.id.button_cancel_change_username);
 
                 mButtonOkChangeUsername.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mAPIService.changeUsername(token,mEditTextChangeUsername.getText().toString().trim()).enqueue(new Callback<Login>() {
-                            @Override
-                            public void onResponse(Call<Login> call, Response<Login> response) {
-                                if (response.isSuccessful() == true){
-                                    Toast.makeText(ProfileActivity.this,"Bạn đã đổi username thành công",Toast.LENGTH_LONG).show();
-                                    ;
-                                    mTextViewUsername.setText(mEditTextChangeUsername.getText().toString().trim());
-                                    View view = (View) mDialogChangeUsername.getWindow().getDecorView();
+                        if (mEditTextChangeUsername.getText().toString().trim().equalsIgnoreCase("")){
+                            LayoutInflater inflater = getLayoutInflater();
+                            View layout = inflater.inflate(R.layout.toast,
+                                    (ViewGroup) findViewById(R.id.toast_layout_root));
 
-                                    InputMethodManager imm = (InputMethodManager) getSystemService(ProfileActivity.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
-                                    mDialogChangeUsername.dismiss();
+                            TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                            text.setText("Username không được để trống");
+
+                            Toast toast = new Toast(getApplicationContext());
+
+                            toast.setDuration(Toast.LENGTH_LONG);
+                            toast.setView(layout);
+                            toast.show();
+
+                        }
+                        else {
+                            mAPIService.changeUsername(token, mEditTextChangeUsername.getText().toString().trim()).enqueue(new Callback<Login>() {
+                                @Override
+                                public void onResponse(Call<Login> call, Response<Login> response) {
+                                    if (response.isSuccessful() == true) {
+                                        LayoutInflater inflater = getLayoutInflater();
+                                        View layout = inflater.inflate(R.layout.toast,
+                                                (ViewGroup) findViewById(R.id.toast_layout_root));
+
+
+                                        TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                                        text.setText("Bạn đã thay đổi username thành công");
+
+                                        Toast toast = new Toast(getApplicationContext());
+
+                                        toast.setDuration(Toast.LENGTH_LONG);
+                                        toast.setView(layout);
+                                        toast.show();
+                                        mTextViewUsername.setText(mEditTextChangeUsername.getText().toString().trim());
+                                        View view = (View) mDialogChangeUsername.getWindow().getDecorView();
+
+                                        InputMethodManager imm = (InputMethodManager) getSystemService(ProfileActivity.INPUT_METHOD_SERVICE);
+                                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+                                        mDialogChangeUsername.dismiss();
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onFailure(Call<Login> call, Throwable t) {
-                                LayoutInflater inflater = getLayoutInflater();
-                                View layout = inflater.inflate(R.layout.toast,
-                                        (ViewGroup) findViewById(R.id.toast_layout_root));
+                                @Override
+                                public void onFailure(Call<Login> call, Throwable t) {
+                                    LayoutInflater inflater = getLayoutInflater();
+                                    View layout = inflater.inflate(R.layout.toast,
+                                            (ViewGroup) findViewById(R.id.toast_layout_root));
 
 
-                                TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
-                                text.setText("Đổi username thành công");
+                                    TextView text = (TextView) layout.findViewById(R.id.text_view_toast);
+                                    text.setText("Đổi username thành công");
 
-                                Toast toast = new Toast(getApplicationContext());
+                                    Toast toast = new Toast(getApplicationContext());
 
-                                toast.setDuration(Toast.LENGTH_LONG);
-                                toast.setView(layout);
-                                toast.show();
-                                t.printStackTrace();
-                            }
-                        });
+                                    toast.setDuration(Toast.LENGTH_LONG);
+                                    toast.setView(layout);
+                                    toast.show();
+                                    t.printStackTrace();
+                                }
+                            });
+                        }
                     }
                 });
 

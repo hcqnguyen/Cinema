@@ -43,12 +43,7 @@ public class ListFilmAdapter  extends RecyclerView.Adapter<ListFilmAdapter.ViewH
             mTextViewUserId = itemView.findViewById(R.id.text_movie_ID);
             mImageViewFilmCover  = itemView.findViewById(R.id.image_view_film_cover);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mOnClickRecyclerView.onClickItem(getAdapterPosition());
-                }
-            });
+
         }
     }
 
