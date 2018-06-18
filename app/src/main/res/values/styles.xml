@@ -16,9 +16,11 @@
         <!--<item name="colorText">@color/colorText</item>-->
         <!--<item name="colorTitle">@color/colorTitle</item>-->
 
+        <item name="colorAccent">#4e6ee1</item>
         <item name="windowNoTitle">true</item>
         <item name="actionBarSize">0dp</item>
         <item name="android:windowIsTranslucent">true</item>
+
     </style>
 
 </resources>
