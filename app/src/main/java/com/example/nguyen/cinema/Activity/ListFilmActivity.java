@@ -1,11 +1,14 @@
 package com.example.nguyen.cinema.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +17,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -45,11 +49,12 @@ public class ListFilmActivity extends AppCompatActivity implements  SwipeRefresh
     RecyclerView mRecyclerView;
     private ListFilmAdapter mAdapter;
     private APIService mAPIService;
-    LinearLayout mLinearLayoutOpenProfile, mLinearLayoutOpenCreateFilm;
+
     TextView mTextViewTitle;
     android.support.v7.widget.SearchView mSearchViewFilm;
     RelativeLayout mRelativeListFilm;
     SwipeRefreshLayout mSwipeRefreshLayout;
+    FloatingActionButton mFloatingButtonOpenCreateFilm, mFloatingButtonOpenProfile;
 
     ArrayList<ResponeApi.Movie> mList;
     final int RESULT = 3;
@@ -61,8 +66,8 @@ public class ListFilmActivity extends AppCompatActivity implements  SwipeRefresh
         setContentView(R.layout.activity_list_film);
 
         mRecyclerView = findViewById(R.id.recyclerview_list_film);
-        mLinearLayoutOpenCreateFilm = findViewById(R.id.linear_layout_open_create_film);
-        mLinearLayoutOpenProfile = findViewById(R.id.linear_layout_go_open_profile);
+        mFloatingButtonOpenCreateFilm = findViewById(R.id.floattingbutton_openn_create_film);
+        mFloatingButtonOpenProfile = findViewById(R.id.floattingbutton_openn_profile);
         mRelativeListFilm = findViewById(R.id.linear_layout_list_film);
         mSearchViewFilm = findViewById(R.id.search_view_film);
         mTextViewTitle  = findViewById(R.id.text_view_list_film_title);
@@ -94,7 +99,7 @@ public class ListFilmActivity extends AppCompatActivity implements  SwipeRefresh
                 android.R.color.holo_blue_dark);
 
 
-        mLinearLayoutOpenProfile.setOnClickListener(new View.OnClickListener() {
+        mFloatingButtonOpenProfile.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
@@ -108,14 +113,18 @@ public class ListFilmActivity extends AppCompatActivity implements  SwipeRefresh
             }
         });
 
-        mLinearLayoutOpenCreateFilm.setOnClickListener(new View.OnClickListener() {
+
+
+        mFloatingButtonOpenCreateFilm.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("RestrictedApi")
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ListFilmActivity.this, CreateFilmActivity.class);
-                ListFilmActivity.this.overridePendingTransition(R.anim.anim_change_activity_from_right,R.anim.anim_change_activity_from_center_to_left);
+               // ListFilmActivity.this.overridePendingTransition(R.anim.anim_change_activity_from_right,R.anim.anim_change_activity_from_center_to_left);
 
-                ListFilmActivity.this.startActivityForResult(intent,12);
+                startActivityForResult(intent,12,ActivityOptions.makeCustomAnimation(ListFilmActivity.this,
+                        R.anim.anim_change_activity_from_right, R.anim.anim_no_move).toBundle());
                // startActivity(intent, ActivityOptions.makeCustomAnimation(ListFilmActivity.this, R.anim.anim_change_activity_from_right, R.anim.anim_change_activity_from_center_to_left).toBundle());
                 //finish();
             }
@@ -126,6 +135,15 @@ public class ListFilmActivity extends AppCompatActivity implements  SwipeRefresh
 
 
 
+//        int id = mSearchViewFilm.getContext().getResources().getIdentifier("android:id/item_search_view", null, null);
+//        TextView textView = mSearchViewFilm.findViewById(id);
+//        textView.setTextColor("@Android.colorText");
+        mSearchViewFilm.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTextViewTitle.setVisibility(View.GONE);
+            }
+        });
         // TODO search film
         mSearchViewFilm.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
@@ -136,7 +154,7 @@ public class ListFilmActivity extends AppCompatActivity implements  SwipeRefresh
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
+                mTextViewTitle.setVisibility(View.GONE);
                 mAdapter.filter(newText);
                 return true;
             }
@@ -177,13 +195,11 @@ public class ListFilmActivity extends AppCompatActivity implements  SwipeRefresh
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 12)
             if (resultCode == Activity.RESULT_OK) {
-                Animation transate = AnimationUtils.loadAnimation(this,R.anim.anim_change_activity_from_left);
-                mRelativeListFilm.startAnimation(transate);
+
                 loadFilm();
             }
             else {
-                Animation transate = AnimationUtils.loadAnimation(this,R.anim.anim_change_activity_from_left);
-                mRelativeListFilm.startAnimation(transate);
+
             }
     }
 

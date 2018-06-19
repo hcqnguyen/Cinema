@@ -87,9 +87,9 @@ public class CreateFilmActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_film);
 
         mLinearLayoutCreateFilm = findViewById(R.id.create_film);
-        Animation fromRigttoCenter = AnimationUtils.loadAnimation(this,R.anim.anim_change_activity_from_right);
-
-        mLinearLayoutCreateFilm.startAnimation(fromRigttoCenter);
+//        Animation fromRigttoCenter = AnimationUtils.loadAnimation(this,R.anim.anim_change_activity_from_right);
+//
+//        mLinearLayoutCreateFilm.startAnimation(fromRigttoCenter);
 
 
 
@@ -125,13 +125,15 @@ public class CreateFilmActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Animation fromCentertoRight = AnimationUtils.loadAnimation(CreateFilmActivity.this,R.anim.anim_change_activity_from_center_to_right);
-                mLinearLayoutCreateFilm.startAnimation(fromCentertoRight);
+               // Animation fromCentertoRight = AnimationUtils.loadAnimation(CreateFilmActivity.this,R.anim.anim_change_activity_from_center_to_right);
+
+
+                finish();
                 setResult(RESULT_CANCELED);
 
                // CreateFilmActivity.this.overridePendingTransition(R.anim.anim_change_activity_from_right,R.anim.anim_change_activity_from_center_to_left);
-                finish();
-               // CreateFilmActivity.this.overridePendingTransition(R.anim.anim_change_activity_from_right,R.anim.anim_change_activity_from_center_to_left);
+
+                CreateFilmActivity.this.overridePendingTransition(R.anim.anim_no_move,R.anim.anim_change_activity_from_center_to_left);
             }
         });
 
@@ -338,14 +340,15 @@ public class CreateFilmActivity extends AppCompatActivity {
 //                startActivity(intent, ActivityOptions.makeCustomAnimation(CreateFilmActivity.this, R.anim.anim_change_activity_from_right, R.anim.anim_change_activity_from_center_to_left).toBundle());
                // Intent intent = new Intent();
 
-                Animation fromCentertoRight = AnimationUtils.loadAnimation(CreateFilmActivity.this,R.anim.anim_change_activity_from_center_to_right);
-                mLinearLayoutCreateFilm.startAnimation(fromCentertoRight);
+//                Animation fromCentertoRight = AnimationUtils.loadAnimation(CreateFilmActivity.this,R.anim.anim_change_activity_from_center_to_right);
+//                mLinearLayoutCreateFilm.startAnimation(fromCentertoRight);
                 setResult(CreateFilmActivity.this.RESULT_OK);
 
 
-                //CreateFilmActivity.this.overridePendingTransition(R.anim.anim_change_activity_from_right,R.anim.anim_change_activity_from_center_to_left);
+
 
                 finish();
+                CreateFilmActivity.this.overridePendingTransition(R.anim.anim_change_activity_from_right,R.anim.anim_change_activity_from_center_to_left);
                 Log.e("onResponse", response.message() + "__" + response.toString());
             }
 

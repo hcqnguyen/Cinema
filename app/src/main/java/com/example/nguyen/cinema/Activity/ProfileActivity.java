@@ -114,9 +114,9 @@ public class ProfileActivity extends AppCompatActivity {
         Animation clockwise = AnimationUtils.loadAnimation(this,R.anim.clockwise);
         Animation blink = AnimationUtils.loadAnimation(this,R.anim.blink);
         Animation move = AnimationUtils.loadAnimation(this, R.anim.move);
-        mCicrcleImgVAvatar.startAnimation(alpha);
+        mCicrcleImgVAvatar.startAnimation(move);
         mCardViewListFilm.startAnimation(move);
-        mCardViewProfile.startAnimation(blink);
+        mCardViewProfile.startAnimation(move);
 
 
 
