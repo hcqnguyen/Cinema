@@ -1,11 +1,12 @@
 package com.example.nguyen.cinema.Data.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ResponeApi {
+public class ResponeApi implements Serializable{
 
     @SerializedName("status")
     private int status;
@@ -16,20 +17,20 @@ public class ResponeApi {
     @SerializedName("movies")
     private ArrayList<Movie> movies;
 
-    public class Movie {
+    public class Movie implements Serializable{
         @SerializedName("_id")
         private String id;
 
         @SerializedName("title")
         private String title;
         @SerializedName("genre")
-        @Expose
+
         private String genre;
         @SerializedName("release")
-        @Expose
+
         private String release;
         @SerializedName("description")
-        @Expose
+
         private String description;
 
         public String getId() {
@@ -99,17 +100,17 @@ public class ResponeApi {
         }
 
         @SerializedName("cover")
-        @Expose
+
 
         private String cover;
         @SerializedName("creator")
-        @Expose
+
         private Creator creator;
         @SerializedName("createdAt")
-        @Expose
+
         private String createdAt;
         @SerializedName("__v")
-        @Expose
+
         private Integer v;
 
         public Creator getCreator() {
@@ -140,18 +141,18 @@ public class ResponeApi {
             }
             return p;
         }
-        public class Creator{
+        public class Creator implements Serializable{
             @SerializedName("avatar")
-            @Expose
+
             private String avatar;
             @SerializedName("_id")
-            @Expose
+
             private String id;
             @SerializedName("email")
-            @Expose
+
             private String email;
             @SerializedName("username")
-            @Expose
+
             private String username;
 
             public Creator(String avatar, String id, String email, String username){

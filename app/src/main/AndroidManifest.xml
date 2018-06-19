@@ -24,7 +24,8 @@
         <activity android:name=".Activity.CreateFilmActivity" />
         <activity android:name=".Activity.ListFilmActivity" />
         <activity android:name=".Activity.ProfileActivity" />
-        <activity android:name=".Activity.FilmInfoActivity"></activity>
+        <activity android:name=".Activity.FilmInfoActivity" />
+        <activity android:name=".Activity.ResetPasswordActivity"></activity>
     </application>
 
 </manifest>

@@ -31,9 +31,10 @@ public class ListFilmAdapter  extends RecyclerView.Adapter<ListFilmAdapter.ViewH
     final String DOMAIN = "https://nam-cinema.herokuapp.com";
     onClickRecyclerView mOnClickRecyclerView;
 
-    public ListFilmAdapter(ArrayList<ResponeApi.Movie> mFilms, Context context) {
+    public ListFilmAdapter(ArrayList<ResponeApi.Movie> mFilms, Context context,onClickRecyclerView mOnClickRecyclerView) {
         this.mFilms = mFilms;
         this.context = context;
+        this.mOnClickRecyclerView = mOnClickRecyclerView;
 
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -48,6 +49,12 @@ public class ListFilmAdapter  extends RecyclerView.Adapter<ListFilmAdapter.ViewH
             mTextViewUserId = itemView.findViewById(R.id.text_movie_ID);
             mImageViewFilmCover  = itemView.findViewById(R.id.image_view_film_cover);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnClickRecyclerView.onClickItem(getAdapterPosition());
+                }
+            });
 
         }
 

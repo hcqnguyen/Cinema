@@ -5,7 +5,9 @@
     <!-- Action -->
 
     <string name="action_Sign_in">Đăng nhập</string>
+    <string name="action_Reset_password">Đặt lại mật khẩu</string>
     <string name="action_Sign_up">Đăng ký</string>
+
     <string name="action_Log_out">Đăng xuất</string>
     <string name="action_choose_image">Chọn ảnh</string>
     <string name="action_create_film">Tạo phim</string>
@@ -26,6 +28,7 @@
     <string name="msg_change_username">Thay đổi username</string>
     <string name="msg_change_phone_number">Thay đổi số điện thoại</string>
     <string name="msg_sign_out">Bạn có muốn đăng xuất ?</string>
+    <string name="msg_reset_password">Đặt lại mật khẩu </string>
 
     <!-- Title -->
     <string name="title_create_new_film">TẠO PHIM MỚI</string>

@@ -73,6 +73,7 @@
         </LinearLayout>
 
         <Button
+            android:layout_marginTop="5dp"
             android:id="@+id/button_Sign_in_2"
             android:layout_gravity="center"
             android:layout_width="match_parent"
@@ -85,8 +86,8 @@
             />
 
         <TextView
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
             android:layout_gravity="center"
             android:text="@string/msg_or"
             android:layout_width="wrap_content"
@@ -100,6 +101,26 @@
             android:layout_height="35dp"
             android:background="@drawable/button_login_effect"
             android:text="@string/action_Sign_up"
+            android:textColor="@color/colorText"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            />
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_gravity="center"
+            android:text="@string/msg_or"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorText"
+            />
+        <Button
+            android:id="@+id/button_reset_password"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@drawable/button_login_effect"
+            android:text="@string/action_Reset_password"
             android:textColor="@color/colorText"
             android:textStyle="bold"
             android:textSize="18dp"

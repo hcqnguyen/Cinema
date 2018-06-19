@@ -63,19 +63,20 @@
         android:id="@+id/linear_layout_go_open_profile"
         android:layout_width="60dp"
         android:layout_centerVertical="true"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:gravity="center"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         >
-        <com.example.nguyen.cinema.Data.Model.IconTextView
+        <android.support.design.widget.FloatingActionButton
 
             android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:paddingLeft="5dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:text="@string/fas_fa_user"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_user"
             android:layout_centerVertical="true"
             android:textSize="30dp"
             android:textColor="@color/colorTitle"
@@ -93,17 +94,16 @@
 
 
         >
-        <com.example.nguyen.cinema.Data.Model.IconTextView
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/icon_text_view_create_film"
-            android:text="@string/fas_plus"
+            android:src="@drawable/ic_add"
             android:paddingLeft="5dp"
-            android:layout_marginBottom="10dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:textSize="30dp"
-
+            android:layout_marginBottom="5dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitXY"
             android:layout_marginRight="10dp"
-            android:textColor="@color/colorTitle"
+
             />
 
     </LinearLayout>

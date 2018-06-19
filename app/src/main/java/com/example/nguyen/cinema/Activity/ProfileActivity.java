@@ -631,7 +631,7 @@ public class ProfileActivity extends AppCompatActivity {
                 //showSignoutDialog();
                 SharedPreferences pre = getSharedPreferences("access_token",MODE_PRIVATE);
                 SharedPreferences.Editor editor = pre.edit();
-                editor.clear();
+                editor.putBoolean("isLogin" , false);
                 editor.commit();
                 Intent intent = new Intent(ProfileActivity.this, SignInActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

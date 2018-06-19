@@ -32,7 +32,7 @@ import retrofit2.Response;
 public class SignInActivity extends AppCompatActivity {
 
     EditText mEditTextEmail2, mEditTextPassword2;
-    Button mButtonSigIn2, mButtonSigUp2;
+    Button mButtonSigIn2, mButtonSigUp2, mButtonResetPassword;
     String mEmail,mPassword;
     APIService mAPIService;
     final String TAG = "--- SIGN IN ACITIVTY";
@@ -52,6 +52,7 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
 
         SharedPreferences pre = getSharedPreferences("access_token",MODE_PRIVATE);
+
         if (pre.getBoolean("isLogin",false) == true)
         {
             Intent intent = new Intent(SignInActivity.this, ListFilmActivity.class);
@@ -59,13 +60,26 @@ public class SignInActivity extends AppCompatActivity {
             finish();
         }
 
+
         mButtonSigIn2 =findViewById(R.id.button_Sign_in_2);
         mButtonSigUp2 = findViewById(R.id.button_Sign_up_2);
         mEditTextPassword2 = findViewById(R.id.edit_text_password_2);
         mEditTextEmail2 = findViewById(R.id.edit_text_email_2);
+        mButtonResetPassword = findViewById(R.id.button_reset_password);
 
+        if  (pre.getBoolean("isLogin",false) == false) {
+            mEditTextPassword2.setText(pre.getString("password","").toString());
+            mEditTextEmail2.setText(pre.getString("email","").toString());
+        }
         mAPIService = ApiUtils.getAPIService(pre.getString("token",""));
 
+        mButtonResetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SignInActivity.this, ResetPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
 
         mButtonSigUp2.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -158,9 +172,14 @@ public class SignInActivity extends AppCompatActivity {
                      token = response.body().getToken();
                     SharedPreferences pre = getSharedPreferences("access_token",MODE_PRIVATE);
                     SharedPreferences.Editor editor = pre.edit();
+                    editor.clear();
                     editor.putString("token",token);
                     editor.putBoolean("isLogin",isLogin);
+                    editor.putString("email",response.body().getUser().getEmail());
+                    editor.putString("password",mEditTextPassword2.getText().toString());
                     editor.commit();
+
+
 
                     Intent intent = new Intent(SignInActivity.this, ListFilmActivity.class);
                     startActivity(intent);

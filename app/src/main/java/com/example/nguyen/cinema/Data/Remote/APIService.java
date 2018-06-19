@@ -93,4 +93,9 @@ public interface APIService {
 
     );
 
+    @FormUrlEncoded
+    @POST("/api/v1/auth/request-reset-password")
+    Call<ResponseBody> resetPassword(
+                                      @Field("email") String newPassword
+    );
 }

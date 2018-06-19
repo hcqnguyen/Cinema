@@ -29,6 +29,7 @@ import com.example.nguyen.cinema.Data.Remote.APIService;
 import com.example.nguyen.cinema.Data.Remote.ApiUtils;
 import com.example.nguyen.cinema.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +41,7 @@ import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
-public class ListFilmActivity extends AppCompatActivity implements  SwipeRefreshLayout.OnRefreshListener {
+public class ListFilmActivity extends AppCompatActivity implements  SwipeRefreshLayout.OnRefreshListener, ListFilmAdapter.onClickRecyclerView {
     RecyclerView mRecyclerView;
     private ListFilmAdapter mAdapter;
     private APIService mAPIService;
@@ -49,7 +50,8 @@ public class ListFilmActivity extends AppCompatActivity implements  SwipeRefresh
     android.support.v7.widget.SearchView mSearchViewFilm;
     RelativeLayout mRelativeListFilm;
     SwipeRefreshLayout mSwipeRefreshLayout;
-    ArrayList<ResponeApi.Movie> mDataSet;
+
+    ArrayList<ResponeApi.Movie> mList;
     final int RESULT = 3;
 
     @Override
@@ -70,7 +72,7 @@ public class ListFilmActivity extends AppCompatActivity implements  SwipeRefresh
 
 
 
-        mAdapter = new ListFilmAdapter(new ArrayList<ResponeApi.Movie>(), ListFilmActivity.this);
+        mAdapter = new ListFilmAdapter(new ArrayList<ResponeApi.Movie>(), ListFilmActivity.this,this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(ListFilmActivity.this);
         loadFilm();
         mRecyclerView.setLayoutManager(layoutManager);
@@ -122,7 +124,7 @@ public class ListFilmActivity extends AppCompatActivity implements  SwipeRefresh
       //  loadFilm();
 
 
-        
+
 
         // TODO search film
         mSearchViewFilm.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
@@ -190,7 +192,7 @@ public class ListFilmActivity extends AppCompatActivity implements  SwipeRefresh
             @Override
             public void onResponse(Call<ResponeApi> call, Response<ResponeApi> response) {
                 if (response.isSuccessful()) {
-                    ArrayList<ResponeApi.Movie> mList = response.body().getMovies();
+                    mList = response.body().getMovies();
                     Collections.reverse(mList);
                     mAdapter.updateAnswers(mList);
                     Log.i("LISTFILM ACITIVTY", "__");
@@ -221,5 +223,12 @@ public class ListFilmActivity extends AppCompatActivity implements  SwipeRefresh
     @Override
     public void onRefresh() {
 
+    }
+
+    @Override
+    public void onClickItem(int position) {
+        Intent intent = new Intent(ListFilmActivity.this, FilmInfoActivity.class);
+        intent.putExtra("FILM", (Serializable) mList.get(position));
+        startActivity(intent);
     }
 }
