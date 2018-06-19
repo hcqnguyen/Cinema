@@ -1,39 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linear_layout_list_film"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.ListFilmActivity">
     <RelativeLayout
 
+        android:id="@+id/relative_title_list_film"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:orientation="horizontal"
         android:background="@color/colorTitle"
         >
-        <LinearLayout
-            android:id="@+id/linear_layout_go_open_profile"
-            android:layout_width="60dp"
-            android:layout_centerVertical="true"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            >
-        <com.example.nguyen.cinema.Data.Model.IconTextView
 
-            android:layout_marginLeft="10dp"
-            android:paddingLeft="5dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:text="@string/fas_fa_user"
-            android:layout_centerVertical="true"
-            android:textSize="23dp"
-            android:textColor="@color/colorText"
-            />
-        </LinearLayout>
 
         <TextView
+            android:id="@+id/text_view_list_film_title"
             android:text="@string/titile_list_film"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -46,35 +31,25 @@
             android:layout_centerHorizontal="true"
             android:textColor="@color/colorText"
             />
-        <LinearLayout
-            android:id="@+id/linear_layout_open_create_film"
-            android:layout_width="60dp"
-            android:layout_centerVertical="true"
-            android:layout_height="match_parent"
-            android:gravity="center"
+
+        <android.support.v7.widget.SearchView
+            android:id="@+id/search_view_film"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-
+            android:gravity="center"
+            
             >
-        <com.example.nguyen.cinema.Data.Model.IconTextView
-            android:id="@+id/icon_text_view_create_film"
 
-            android:text="@string/fas_plus"
-            android:layout_gravity="center"
-            android:paddingLeft="5dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:textSize="22dp"
+        </android.support.v7.widget.SearchView>
 
-            android:layout_marginRight="10dp"
-            android:textColor="@color/colorText"
-            />
-
-        </LinearLayout>
 
     </RelativeLayout>
+
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipe_container"
+        android:layout_below="@+id/relative_title_list_film"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <android.support.v7.widget.RecyclerView
@@ -84,7 +59,54 @@
 
     </android.support.v7.widget.RecyclerView>
     </android.support.v4.widget.SwipeRefreshLayout>
+    <LinearLayout
+        android:id="@+id/linear_layout_go_open_profile"
+        android:layout_width="60dp"
+        android:layout_centerVertical="true"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        >
+        <com.example.nguyen.cinema.Data.Model.IconTextView
+
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:paddingLeft="5dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:text="@string/fas_fa_user"
+            android:layout_centerVertical="true"
+            android:textSize="30dp"
+            android:textColor="@color/colorTitle"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_layout_open_create_film"
+        android:layout_width="60dp"
+        android:layout_centerVertical="true"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
 
 
+        >
+        <com.example.nguyen.cinema.Data.Model.IconTextView
+            android:id="@+id/icon_text_view_create_film"
+            android:text="@string/fas_plus"
+            android:paddingLeft="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:textSize="30dp"
 
-</LinearLayout>
+            android:layout_marginRight="10dp"
+            android:textColor="@color/colorTitle"
+            />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

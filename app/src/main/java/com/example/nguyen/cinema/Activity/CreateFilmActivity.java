@@ -1,6 +1,7 @@
 package com.example.nguyen.cinema.Activity;
 
 import android.Manifest;
+import android.app.ActivityOptions;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,9 +10,11 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +23,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -58,13 +63,14 @@ public class CreateFilmActivity extends AppCompatActivity {
     private static final String TAG = "CREATE FILM" ;
     Button mButtonChoseImage, mButtonCreateFilm;
     TextView mTextViewRelease;
-    LinearLayout mLinearLayoutBackToListFilm;
+    LinearLayout mLinearLayoutBackToListFilm, mLinearLayoutCreateFilm;
     EditText mEditTextTitle, mEditTextDiscription;
     ImageView mImageViewAvatar;
     Spinner mSpinnerGenre;
     Calendar cal;
     Date date;
     int REQUEST_IMAGE_CAPTURE = 1, GALLERY  = 0;
+
     private Bitmap myBitmap;
     private static final String IMAGE_DIRECTORY = "/demonuts";
     private static final int RECORD_REQUEST_CODE = 101;
@@ -79,6 +85,13 @@ public class CreateFilmActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_film);
+
+        mLinearLayoutCreateFilm = findViewById(R.id.create_film);
+        Animation fromRigttoCenter = AnimationUtils.loadAnimation(this,R.anim.anim_change_activity_from_right);
+
+        mLinearLayoutCreateFilm.startAnimation(fromRigttoCenter);
+
+
 
 
         addControls();
@@ -107,12 +120,18 @@ public class CreateFilmActivity extends AppCompatActivity {
         String strDate = dft.format(cal.getTime());
         mTextViewRelease.setText(strDate);
 
+        //TODO back to list film
         mLinearLayoutBackToListFilm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                Animation fromCentertoRight = AnimationUtils.loadAnimation(CreateFilmActivity.this,R.anim.anim_change_activity_from_center_to_right);
+                mLinearLayoutCreateFilm.startAnimation(fromCentertoRight);
+                setResult(RESULT_CANCELED);
+
+               // CreateFilmActivity.this.overridePendingTransition(R.anim.anim_change_activity_from_right,R.anim.anim_change_activity_from_center_to_left);
                 finish();
-                CreateFilmActivity.this.overridePendingTransition(R.anim.anim_change_activity_from_right,R.anim.anim_change_activity_from_center_to_left);
+               // CreateFilmActivity.this.overridePendingTransition(R.anim.anim_change_activity_from_right,R.anim.anim_change_activity_from_center_to_left);
             }
         });
 
@@ -299,6 +318,7 @@ public class CreateFilmActivity extends AppCompatActivity {
         SharedPreferences pre = getSharedPreferences("access_token",MODE_PRIVATE);
         mAPIService = ApiUtils.getAPIService(pre.getString("token",""));
         mAPIService.uploadFileWithPartMap( map, body).enqueue(new Callback<ResponseBody>() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 LayoutInflater inflater = getLayoutInflater();
@@ -314,8 +334,18 @@ public class CreateFilmActivity extends AppCompatActivity {
                 toast.setDuration(Toast.LENGTH_LONG);
                 toast.setView(layout);
                 toast.show();
+//                Intent intent = new Intent(CreateFilmActivity.this, ListFilmActivity.class);
+//                startActivity(intent, ActivityOptions.makeCustomAnimation(CreateFilmActivity.this, R.anim.anim_change_activity_from_right, R.anim.anim_change_activity_from_center_to_left).toBundle());
+               // Intent intent = new Intent();
+
+                Animation fromCentertoRight = AnimationUtils.loadAnimation(CreateFilmActivity.this,R.anim.anim_change_activity_from_center_to_right);
+                mLinearLayoutCreateFilm.startAnimation(fromCentertoRight);
+                setResult(CreateFilmActivity.this.RESULT_OK);
+
+
+                //CreateFilmActivity.this.overridePendingTransition(R.anim.anim_change_activity_from_right,R.anim.anim_change_activity_from_center_to_left);
+
                 finish();
-                CreateFilmActivity.this.overridePendingTransition(R.anim.anim_change_activity_from_right,R.anim.anim_change_activity_from_center_to_left);
                 Log.e("onResponse", response.message() + "__" + response.toString());
             }
 

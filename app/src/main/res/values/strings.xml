@@ -40,4 +40,5 @@
     <string name="hint_reinput_password"> Xác nhận lại mật khẩu</string>
     <string name="hint_old_password"> Mật khẩu cũ</string>
     <string name="hint_new_password"> Mật khẩu mới</string>
+    <string name="hint_search_film"> Nhập tên phim cần tìm</string>
 </resources>

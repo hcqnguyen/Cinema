@@ -121,6 +121,25 @@ public class ResponeApi {
 
             this.creator = creator;
         }
+
+        public Movie clone(){
+            Movie p = new Movie();
+            p.setId(this.id);
+            p.setTitle(this.title);
+            p.setGenre(this.genre);
+            p.setRelease(this.release);
+            p.setDescription(this.description);
+            p.setCover(this.cover);
+            p.setCreatedAt(this.createdAt);
+            p.setV(this.v);
+            if(this.getCreator() == null){
+                p.creator = null;
+            }else {
+                p.creator = new Creator(this.getCreator().getAvatar(), this.getCreator().getId(),
+                        this.getCreator().getEmail(), this.getCreator().getUsername());
+            }
+            return p;
+        }
         public class Creator{
             @SerializedName("avatar")
             @Expose
@@ -135,6 +154,12 @@ public class ResponeApi {
             @Expose
             private String username;
 
+            public Creator(String avatar, String id, String email, String username){
+                this.avatar = avatar;
+                this.id = id;
+                this.email = email;
+                this.username = username;
+            }
             public String getAvatar() {
                 return avatar;
             }
